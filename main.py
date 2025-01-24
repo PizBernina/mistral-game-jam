@@ -6,11 +6,11 @@ from prompts.instruction_prompts import instruction_prompt
 from prompts.game_rules import game_rules
 from prompts.hints import hints
 from prompts.triggers import triggers
-from helper_functions import load_character_data, load_chat_history, save_chat_history, update_chat_history
-from utils import api_key, model, trump_character, client
+from helper_functions import load_chat_history, save_chat_history, update_chat_history
+from utils import model, trump_character, client
 
 # Get user message from your existing code
-user_message = "So, let's invade Greenland?" 
+user_message = "hello" 
 
 # Load existing chat history
 chat_history = load_chat_history()
@@ -18,6 +18,8 @@ chat_history = load_chat_history()
 # Add user message to history
 chat_history = update_chat_history(chat_history, user_message=user_message)
 
+# Load Trump character data
+#trump_character = load_character_data()
 
 # Whole Prompt
 formatted_prompt = instruction_prompt.format(

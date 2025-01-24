@@ -13,7 +13,8 @@ With that being said, we are playing a game with the user.
 ### Hints to the user:
 {hints}
 
-### Here are triggers that will instantly convince you to make a deal with the user:
+### Here are triggers that will instantly convince you to make a deal with the user
+If you see one of the say DEAL!
 {triggers}
 
 
