@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space template</title>
+</head>
+<body>
+  DEMO fastapi with static HTML. POST request to /api/test:<br/>
+  <pre id="demo_output"></pre>
+  <script>
+    document.getElementById("demo_output").innerHTML = "Loading...";
+
+    const DEMO_JSON = {
+      "key1": "value1",
+      "key2": "value2"
+    };
+
+    fetch('/api/test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(DEMO_JSON),
+    })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("demo_output").innerHTML = JSON.stringify(data, null, 2);
+      })
+      .catch(error => {
+        document.getElementById("demo_output").innerHTML = 'Error: ' + error;
+      });
+  </script>
+</body>
+</html>
