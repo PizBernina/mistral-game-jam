@@ -1,0 +1,10 @@
+name: hackathon
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - mistralai
+  - dotenv
+  - json
+  - os
+  - requests
