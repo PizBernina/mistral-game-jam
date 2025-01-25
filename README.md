@@ -2,7 +2,7 @@
 title: What could possibly go wrong?
 emoji: 🦅
 colorFrom: gray
-colorTo: orange
+colorTo: red
 sdk: docker
 pinned: false
 ---
