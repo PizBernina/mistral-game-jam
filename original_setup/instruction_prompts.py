@@ -8,9 +8,6 @@ With that being said, we are playing a game with the user.
 ### Here are the rules:
 {rules}
 
-### Here is the description of who the user is:
-{advisor}.
-
 ### Here is your character:
 {character}
 
@@ -26,6 +23,9 @@ Today is a new day.
 
 ### Here is your concern
 {concern}
+
+### Here is the description of who the user is today:
+{advisor}.
 
 
 """
