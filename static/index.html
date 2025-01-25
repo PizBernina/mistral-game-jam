@@ -3,55 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🍊 Trump Diplomacy</title>
-  <style>
-    .chat-window {
-      height: 400px;
-      width: 100%;
-      max-width: 600px;
-      border: 1px solid #ccc;
-      overflow-y: auto;
-      margin-bottom: 20px;
-      padding: 10px;
-    }
-    .message {
-      margin: 10px 0;
-      padding: 8px;
-      border-radius: 8px;
-    }
-    .user-message {
-      background-color: #e3f2fd;
-      margin-left: 20%;
-    }
-    .trump-message {
-      background-color: #ffebee;
-      margin-right: 20%;
-    }
-    .input-container {
-      display: flex;
-      gap: 10px;
-      max-width: 600px;
-    }
-    #messageInput {
-      flex-grow: 1;
-      padding: 8px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>🍊 Trump Diplomacy</h1>
-  <div class="chat-window" id="chatWindow"></div>
-  <div class="input-container">
-    <input type="text" id="messageInput" placeholder="Type your message...">
-    <button id="sendButton">Send</button>
+  <div class="chatbot">
+    <div class="chatbot-header">
+      <div class="profile-image">
+        <img src="/images/donald_trump.jpg" alt="Trump">
+      </div>
+      <div class="profile-text">
+        <h2>Donald J. Trump</h2>
+        <span>@realDonaldTrump</span>
+        <p>45th President of the United States of America<br/>
+           DonaldJTrump.com<br/>
+           A rejoint X en mars 2009</p>
+      </div>
+      <div class="divider"></div>
+    </div>
+    <div class="chatbot-messages" id="chatWindow"></div>
+    <div class="chatbot-input">
+      <input type="text" id="messageInput" placeholder="Type your message...">
+      <button id="sendButton">Send</button>
+    </div>
   </div>
 
   <script>
     function addMessageToChat(message, isUser) {
       const chatWindow = document.getElementById('chatWindow');
       const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${isUser ? 'user-message' : 'trump-message'}`;
-      messageDiv.textContent = message;
+      messageDiv.className = `message ${isUser ? 'user' : 'trump'}`;
+      
+      if (!isUser) {
+        const img = document.createElement('jpg');
+        img.src = '/images/donald_trump.jpg';
+        img.alt = 'Trump';
+        messageDiv.appendChild(img);
+      }
+      
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'message-content';
+      contentDiv.textContent = message;
+      
+      messageDiv.appendChild(contentDiv);
       chatWindow.appendChild(messageDiv);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     }
