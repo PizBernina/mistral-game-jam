@@ -7,13 +7,13 @@ def load_character_data():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(current_dir, 'original_setup/trump.character.json')
     
-    with open(json_path, 'r') as file:
+    with open(json_path, 'r',encoding='utf-8') as file:
         return json.load(file)
 
 def load_chat_history(game_root):
     history_path = game_root + '/chat_history.json'
     try:
-        with open(history_path, 'r') as file:
+        with open(history_path, 'r',encoding='utf-8') as file:
             return json.load(file)
     except FileNotFoundError:
         return []
@@ -45,7 +45,7 @@ def update_chat_history(chat_history, user_message=None, trump_message=None):
 def save_chat_history(history, game_root):
     history_path = os.path.join(game_root, 'chat_history.json')
     
-    with open(history_path, 'w') as file:
+    with open(history_path, 'w',encoding='utf-8') as file:
         json.dump(history, file, indent=2)
 
 def initialize_game():
@@ -63,22 +63,22 @@ def generate_round_context(game_number):
     contexts_dir = 'original_setup/contexts/'
 
     #generate idea
-    with open(contexts_dir + 'actions.list', 'r') as file:
+    with open(contexts_dir + 'actions.list', 'r',encoding='utf-8') as file:
         idea_csq = file.readlines()
         idea_csq = choice(idea_csq)
         idea, delta_USA, delta_country, delta_friendliness = idea_csq.split(';')
         delta_friendliness = delta_friendliness.split()[0]
-    with open(contexts_dir + 'countries.list', 'r') as f_countries:
+    with open(contexts_dir + 'countries.list', 'r',encoding='utf-8') as f_countries:
         countries = f_countries.readlines()
         country = choice(countries).split()[0]
 
     idea = idea.replace('[country]', country)
 
-    with open(contexts_dir + 'concerns.list', 'r') as f:
+    with open(contexts_dir + 'concerns.list', 'r',encoding='utf-8') as f:
         concerns = f.readlines()
         concern = choice(concerns)
 
-    with open(contexts_dir + '2nd_characters.list', 'r') as f:
+    with open(contexts_dir + '2nd_characters.list', 'r',encoding='utf-8') as f:
         advisors = f.readlines()
         advisor = choice(advisors)
 
@@ -107,12 +107,12 @@ def check_end(trump_response):
 
 def process_ending(idea_is_accepted, game_number, idea):
     if idea_is_accepted:
-        with open(f'games/game_{game_number}/events.list', 'a') as f:
+        with open(f'games/game_{game_number}/events.list', 'a',encoding='utf-8') as f:
             f.write(idea + '\n')
 
         world_graph = WorldGraph(f'games/game_{game_number}/world_graph.edgelist')
 
-        with open(f'games/game_{game_number}/round_consequences.json', 'r') as f:
+        with open(f'games/game_{game_number}/round_consequences.json', 'r',encoding='utf-8') as f:
             consequences = json.load(f)
             country = consequences['country'] 
             delta_USA = int(consequences['delta_USA'])
