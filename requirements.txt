@@ -1,3 +1,5 @@
 fastapi
-mistralai
 uvicorn[standard]
+mistralai
+python-dotenv
+pydantic
