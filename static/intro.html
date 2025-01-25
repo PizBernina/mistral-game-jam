@@ -24,7 +24,7 @@
     /* Conteneur du texte */
     #text-container {
       position: absolute;
-      top: 10%;
+      top: 5%;
       left: 50%;
       transform: translateX(-50%);
       width: 60%;
@@ -35,7 +35,7 @@
       text-align: left;
       font-weight: bold;
       font-size: 1.2rem;
-      z-index: 3; /* au-dessus des flammes si besoin */
+      z-index: 3;
     }
 
     /* Conteneur des flammes */
@@ -57,6 +57,23 @@
         background-position: -1000px 0; 
       }
     }
+
+    .start-button {
+      display: block;
+      margin: 40px auto 20px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .start-button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 
@@ -73,10 +90,11 @@
       "USA is on the edge of total colapse.",
       "Borders are wide open.",
       "People are eating cats and dogs.",
-      "Oil production? it's pratically a fairy tale now ! ",
+      "Oil production? It's practically a fairy tale now ! ",
       "God sent the perfect president to save the nation.",
       "",
-      "Welcome to What possibly go Wrong in 2025 ! "
+      "Welcome to",
+      "<img src='/images/intro/game_name.png' alt='What possibly go Wrong 2025' style='display: center; margin: -10px; max-width: 150%; transform: translateX(-17%);'>",
     ];
 
     const textContainer = document.getElementById('text-container');
@@ -92,6 +110,17 @@
       }
 
       const currentLine = lines[lineIndex];
+
+      // Add special handling for HTML content
+      if (currentLine.startsWith('<')) {
+        const elem = document.createElement('div');
+        elem.innerHTML = currentLine;
+        textContainer.appendChild(elem);
+        lineIndex++;
+        charIndex = 0;
+        setTimeout(typeWriter, 25);
+        return;
+      }
 
       // -- 1) Gérer la ligne vide ("") --
       if (currentLine === "") {

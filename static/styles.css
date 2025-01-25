@@ -348,7 +348,7 @@ body {
 
 #gamePopup .popup-ok {
   position: absolute;
-  bottom: 200px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
