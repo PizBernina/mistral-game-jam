@@ -125,6 +125,10 @@ async def send_message(message: Message):
         # Save updated chat history
         save_chat_history(chat_history, f'games/game_{game_number}')
 
+        #is_ending, idea_is_accepted = check_end(trump_response)
+#
+        #if is_ending
+#
         return {
             "trump_response": trump_response,
             "chat_history": chat_history
