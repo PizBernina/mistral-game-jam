@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>What possibly go Wrong 2025</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Image de fond qui remplit tout l’écran */
+    body {
+      background: url('./Intro.jpg') no-repeat center center;
+      background-size: cover; /* ou 100% auto */
+      position: relative;
+    }
+
+    /* Conteneur du texte */
+    #text-container {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      color: #fff;
+      text-align: left;
+      font-weight: bold;
+      font-size: 1.2rem;
+      z-index: 3; /* au-dessus des flammes si besoin */
+    }
+
+    /* Conteneur des flammes */
+    #flames {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px; 
+      background: url('fire3.png') repeat-x; 
+      animation: flameAnim 3s steps(10) infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes flameAnim {
+      100% {
+        background-position: -1000px 0; 
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="text-container"></div>
+
+  <script>
+    const lines = [
+      "Warning !",
+      "This game is a work of fiction.",
+      "Any resemblance to real people or events is purely coincidental.",
+      "",
+      //"It is 2025.",
+      //"The world is in turmoil.",
+      "USA is on the edge of total colapse.",
+     // "The economy is in shambles.",
+      // "The government is corrupt.",
+      "Borders are wide open.",
+      "People are eating cats and dogs.",
+      "Oil production? it's pratically a fairy tale now ! ",
+      //"Voter fraud runs rampant, government is corrupt",
+      //"But there is hope.",
+      "God sent the perfect president to save the nation.",
+      // "...",
+      // "...",
+      "",
+      "Welcome to What possibly go Wrong in 2025 ! "
+    ];
+
+    const textContainer = document.getElementById('text-container');
+
+    let lineIndex = 0;    // Indice de la ligne en cours
+    let charIndex = 0;    // Indice du caractère en cours dans la ligne
+    let currentLineElem;  // Élement HTML pour la ligne en cours (si non vide)
+
+
+    function createStartPlayingButton() {
+      const button = document.createElement('button');
+      button.textContent = "Start playing";
+
+      // Stylisation du bouton
+      button.style.display = "inline-block";
+      button.style.backgroundColor = "rgba(128, 128, 128, 0.5)";  // Gris semi-transparent
+      button.style.border = "none";
+      button.style.color = "#fff";
+      button.style.fontSize = "1.2em";
+      button.style.padding = "10px 20px";
+      button.style.borderRadius = "5px";
+      button.style.cursor = "pointer";
+      button.style.marginTop = "20px";
+      button.style.transition = "background-color 0.3s ease"; // Animation douce
+
+      // Ajouter l'effet hover avec mouseover et mouseout
+      button.addEventListener("mouseover", () => {
+          button.style.backgroundColor = "rgba(64, 64, 64, 0.8)"; // Gris foncé
+      });
+      button.addEventListener("mouseout", () => {
+          button.style.backgroundColor = "rgba(128, 128, 128, 0.5)"; // Gris clair initial
+      });
+
+      textContainer.appendChild(button);
+  }
+
+
+    function typeWriter() {
+      // Si on a traité toutes les lignes, on arrête
+      if (lineIndex >= lines.length) {
+        createStartPlayingButton();
+        return;
+      }
+
+      const currentLine = lines[lineIndex];
+
+      // -- 1) Gérer la ligne vide ("") --
+      if (currentLine === "") {
+        // On affiche un saut de ligne
+        textContainer.appendChild(document.createElement('br'));
+
+        // Après 2 secondes, on efface le texte et on passe à la suite
+        // setTimeout(() => {
+        //   textContainer.innerHTML = "";
+        //   lineIndex++;
+        //   charIndex = 0;
+        //   typeWriter(); // relance l'affichage de la ligne suivante
+        // }, 3000);
+
+          lineIndex++;
+          charIndex = 0;
+          typeWriter(); // relance l'affichage de la ligne suivante
+
+        // On quitte immédiatement la fonction pour éviter tout conflit de setTimeout
+        return;
+      }
+      
+      // -- 2) Si la ligne n'est pas vide, affichage "lettre par lettre" --
+      if (charIndex === 0) {
+        // On crée un nouvel élément pour la nouvelle ligne
+        currentLineElem = document.createElement('div');
+        textContainer.appendChild(currentLineElem);
+      }
+
+      // Ajout du caractère suivant
+      currentLineElem.textContent += currentLine.charAt(charIndex);
+      charIndex++;
+
+      // S'il reste des caractères à afficher dans la ligne
+      if (charIndex < currentLine.length) {
+        setTimeout(typeWriter, 30);
+      } else {
+        // Ligne terminée : on passe à la ligne suivante
+        lineIndex++;
+        charIndex = 0;
+        currentLineElem = null;
+
+        // Petite pause avant d'attaquer la prochaine ligne
+        setTimeout(typeWriter, 25);
+      }
+
+      
+
+
+    }
+
+    // On démarre le « typewriter »
+    
+
+
+
+      typeWriter();
+
+      //createStartPlayingButton()
+  </script>
+</body>
+
+
+</html>
