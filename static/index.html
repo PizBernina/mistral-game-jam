@@ -16,11 +16,9 @@
       <div class="profile-text">
         <h2>Donald J. Trump</h2>
         <span>@realDonaldTrump</span>
-        <p>
-          45th President of the United States of America<br/>
-          DonaldJTrump.com<br/>
-          A rejoint X en mars 2009
-        </p>
+        <p>45th & 47th President 🇺🇸<br/>
+           DonaldJTrump.com<br/>
+           A rejoint X en mars 2009</p>
       </div>
       <div class="divider"></div>
     </div>
@@ -31,11 +29,40 @@
     </div>
   </div>
 
+
+  <div class="popup" id="gamePopup">
+    <div class="popup-header">
+      <span class="popup-title">Game Intro</span>
+      <div class="popup-controls">
+        <button class="control-btn minimize">−</button>
+        <button class="control-btn maximize">□</button>
+        <button class="control-btn close">×</button>
+      </div>
+    </div>
+    <div class="popup-content">
+      <iframe src="intro.html" class="intro-frame"></iframe>
+      <button class="popup-ok">Start Game</button>
+    </div>
+  </div>
+
+  <div class="popup" id="gameOverPopup">
+    <div class="popup-header">
+      <span class="popup-title">Game Over</span>
+      <div class="popup-controls">
+        <button class="control-btn close">×</button>
+      </div>
+    </div>
+    <div class="popup-content">
+      <img src="/images/game_over.png" alt="Game Over" class="popup-gif">
+      <button class="popup-ok">Try Again</button>
+    </div>
+  </div>
+
   <!-- Ajout : container pour la carte SVG à droite -->
   <div class="map-container">
-    <svg 
-      id="worldMap" 
-      xmlns="http://www.w3.org/2000/svg" 
+    <svg
+      id="worldMap"
+      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 2000 1200"
     >
       <!-- Les paths seront injectés en JavaScript -->
@@ -50,18 +77,18 @@
       const chatWindow = document.getElementById('chatWindow');
       const messageDiv = document.createElement('div');
       messageDiv.className = `message ${isUser ? 'user' : 'trump'}`;
-      
+
       if (!isUser) {
         const img = document.createElement('img');
         img.src = '/images/donald_trump.jpg';
         img.alt = 'Trump';
         messageDiv.appendChild(img);
       }
-      
+
       const contentDiv = document.createElement('div');
       contentDiv.className = 'message-content';
       contentDiv.textContent = message;
-      
+
       messageDiv.appendChild(contentDiv);
       chatWindow.appendChild(messageDiv);
       chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -140,6 +167,109 @@
         event.preventDefault();
         sendMessage();
       }
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load the intro content
+      fetch('./intro.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('introContent').innerHTML = html;
+        });
+
+      // Show popup after content is loaded
+      setTimeout(() => {
+        const popup = document.getElementById('gamePopup');
+        popup.style.display = 'block';
+      }, 2000);
+
+      // Show game over popup after 5 seconds
+     //setTimeout(() => {
+     //   const gameOverPopup = document.getElementById('gameOverPopup');
+     //   gameOverPopup.style.display = 'block';
+     // }, 5000);
+
+      // Initialize game popup controls
+      const popup = document.getElementById('gamePopup');
+      const minimizeBtn = popup.querySelector('.minimize');
+      const maximizeBtn = popup.querySelector('.maximize');
+      const closeBtn = popup.querySelector('.close');
+      const okBtn = popup.querySelector('.popup-ok');
+
+      minimizeBtn.addEventListener('click', () => {
+        popup.classList.add('minimized');
+      });
+
+      maximizeBtn.addEventListener('click', () => {
+        popup.classList.remove('minimized');
+      });
+
+      closeBtn.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+
+      okBtn.addEventListener('click', () => {
+        popup.classList.add('minimized');
+      });
+
+      // Make the popup draggable
+      const header = popup.querySelector('.popup-header');
+      let isDragging = false;
+      let currentX;
+      let currentY;
+      let initialX;
+      let initialY;
+      let xOffset = 0;
+      let yOffset = 0;
+
+      header.addEventListener('mousedown', dragStart);
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('mouseup', dragEnd);
+
+      function dragStart(e) {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+
+        if (e.target === header) {
+          isDragging = true;
+        }
+      }
+
+      function drag(e) {
+        if (isDragging) {
+          e.preventDefault();
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+          xOffset = currentX;
+          yOffset = currentY;
+
+          setTranslate(currentX, currentY, popup);
+        }
+      }
+
+      function setTranslate(xPos, yPos, el) {
+        el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+      }
+
+      function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+      }
+
+      // Initialize game over popup controls
+      const gameOverPopup = document.getElementById('gameOverPopup');
+      const gameOverCloseBtn = gameOverPopup.querySelector('.close');
+      const gameOverOkBtn = gameOverPopup.querySelector('.popup-ok');
+
+      gameOverCloseBtn.addEventListener('click', () => {
+        location.reload();  // Reload page on close
+      });
+
+      gameOverOkBtn.addEventListener('click', () => {
+        location.reload();  // Reload page on Try Again
+      });
     });
 
 
@@ -815,12 +945,12 @@
         } else {
           path.setAttribute('fill', 'red');
         }
-        
+
         // Optionnel : ajout d'un survol ou d'un clic pour modifier l'attribut
         // path.addEventListener('click', () => {
         //   // Ex: toggler la valeur Yes/No puis changer la couleur
         // });
-        
+
         svgContainer.appendChild(path);
       }
     });
