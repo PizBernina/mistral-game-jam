@@ -60,11 +60,11 @@ def generate_text(message: Message):
             "chat_history": chat_history
         }
 
-@app.post("/api/generate-text")
+@app.post("/generate-text")
 def inference(message: Message, request: Request):
     if request.headers.get("origin") != "https://Mistral-AI-Game-Jam/team13.static.hf.space":
         return 204
-    return generate_text(messages=message.messages)
+    return generate_text(message=message)
 
 
 @app.get("/chat-history", tags=["History"])
