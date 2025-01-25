@@ -150,6 +150,10 @@
 
         //updateChatMessage(trumpMessageDiv, data.character_response)
         typeMessage(trumpMessageDiv, data.character_response)
+        console.log("chat ended: ", data.chat_ended);
+        if (data.chat_ended === true) {
+          endSequence(data.idea, data.idea_accepted);
+        }
         //addMessageToChat(data.character_response, false);
       })
       .catch(error => {
@@ -157,6 +161,7 @@
         addMessageToChat('Error: Failed to get response', false);
       });
     }
+
     let receivedFirstMessage = false
     function receiveFirstMessage() {
       console.log("in receive first")
@@ -216,8 +221,35 @@
       }
     });
 
+    function clearChatbox() {
+      const chatbox = document.getElementById("chatWindow"); // Get the chatbox element
+      if (!chatbox) {
+        console.error("Error: Chatbox element not found.");
+        return; // Exit if the chatbox is not found
+      }
+
+      // Remove all child elements from the chatbox
+      while (chatbox.firstChild) {
+        chatbox.removeChild(chatbox.firstChild);
+      }
+    }
+
+    function endSequence(idea, idea_accepted) {
+      // Vide le chat
+      clearChatbox()
+
+      //displaySequencePopup(idea, idea_accepted) // not available
+
+      fetchUpdateMap()
+      // Affiche pop up sequence result avec action prise par trump
+      // Update map
+      receivedFirstMessage = false
+      receiveFirstMessage()
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
+      updateMap(regionData)
+
       // Load the intro content
       fetch('./intro.html')
         .then(response => response.text())
@@ -245,6 +277,7 @@
       const okBtn = popup.querySelector('.popup-ok');
 
       minimizeBtn.addEventListener('click', () => {
+        receiveFirstMessage()
         popup.classList.add('minimized');
       });
 
@@ -253,6 +286,7 @@
       });
 
       closeBtn.addEventListener('click', () => {
+        receiveFirstMessage()
         popup.style.display = 'none';
       });
 
@@ -995,52 +1029,75 @@
   'Other-Asia': ['AF', 'AM', 'AZ', 'BD', 'BT', 'CY', 'GE', 'ID', 'JP', 'KZ', 'KG', 'KH', 'KR', 'LA', 'LK', 'MM', 'MN', 'MY', 'NP', 'PH', 'PK', 'SG', 'TJ', 'TH', 'TL', 'TM', 'UZ', 'VN']
 };
 
-// Le dico qu'on reçoit
-const regionData = {
-  "United-States": { "money": 100, "friendliness": -1 },
-  "Canada": { "money": 50, "friendliness": -1 },
-  "Mexico": { "money": 30, "friendliness": 2 },
-  "South-America": { "money": 40, "friendliness": 3 },
-  "Africa": { "money": 20, "friendliness": 1 },
-  "Europe": { "money": 80, "friendliness": 2 },
-  "Middle-East": { "money": 60, "friendliness": -2 },
-  "Russia": { "money": 70, "friendliness": -3 },
-  "China": { "money": 90, "friendliness": -1 },
-  "India": { "money": 50, "friendliness": 2 },
-  "Australia": { "money": 55, "friendliness": 1 },
-  "Pacific": { "money": 25, "friendliness": 3 },
-  "Taiwan": { "money": 65, "friendliness": 0 },
-  "Greenland": { "money": 10, "friendliness": 1 }
-};
+    // Le dico qu'on reçoit
+    const regionData = {
+      "United-States": { "money": 100, "friendliness": -1 },
+      "Canada": { "money": 50, "friendliness": -1 },
+      "Mexico": { "money": 30, "friendliness": 2 },
+      "South-America": { "money": 40, "friendliness": 3 },
+      "Africa": { "money": 20, "friendliness": 1 },
+      "Europe": { "money": 80, "friendliness": 2 },
+      "Middle-East": { "money": 60, "friendliness": -2 },
+      "Russia": { "money": 70, "friendliness": -3 },
+      "China": { "money": 90, "friendliness": -1 },
+      "India": { "money": 50, "friendliness": 2 },
+      "Australia": { "money": 55, "friendliness": 1 },
+      "Pacific": { "money": 25, "friendliness": 3 },
+      "Taiwan": { "money": 65, "friendliness": 0 },
+      "Greenland": { "money": 10, "friendliness": 1 }
+    };
 
-  // Détermine la couleur de chaque région (vert si au moins un pays est "friendless: Yes", rouge sinon)
-  const regionColors = Object.keys(regionData).reduce((acc, region) => {
-  const friendliness = regionData[region].friendliness;
-  // Convertir `friendliness` en une couleur allant de rouge vif (-3) à vert vif (3)
-  const green = Math.max(0, 255 + friendliness * 85);
-  const red = Math.max(0, 255 - friendliness * 85);
-  acc[region] = `rgb(${red}, ${green}, 0)`; // Couleur calculée
-  return acc;
-}, {});
-
-
-  // Injecte les chemins des régions dans la carte SVG
-  const worldMap = document.getElementById('worldMap');
-
-Object.keys(regions).forEach((region) => {
-  const countryCodes = regions[region]; // Pays de la région
-  countryCodes.forEach((countryCode) => {
-    const country = countries[countryCode];
-    if (country && country.d) {
-      // Créer un chemin pour chaque pays
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', country.d); // Définir le chemin SVG
-      path.setAttribute('fill', regionColors[region] || 'gray'); // Couleur basée sur la région
-      path.setAttribute('stroke', '#000'); // Ajouter un contour noir
-      worldMap.appendChild(path);
+    function fetchUpdateMap() {
+      const regionData = {
+        "United-States": { "money": 100, "friendliness": -1 },
+        "Canada": { "money": 50, "friendliness": -3 },
+        "Mexico": { "money": 30, "friendliness": 2 },
+        "South-America": { "money": 40, "friendliness": 3 },
+        "Africa": { "money": 20, "friendliness": 1 },
+        "Europe": { "money": 80, "friendliness": 2 },
+        "Middle-East": { "money": 60, "friendliness": -2 },
+        "Russia": { "money": 70, "friendliness": -3 },
+        "China": { "money": 90, "friendliness": -1 },
+        "India": { "money": 50, "friendliness": 2 },
+        "Australia": { "money": 55, "friendliness": 1 },
+        "Pacific": { "money": 25, "friendliness": 3 },
+        "Taiwan": { "money": 65, "friendliness": 0 },
+        "Greenland": { "money": 10, "friendliness": 1 }
+      };
+      updateMap(regionData);
     }
-  });
-});
+
+    function updateMap(regionData) {
+      console.log("setup map")
+      // Détermine la couleur de chaque région (vert si au moins un pays est "friendless: Yes", rouge sinon)
+      const regionColors = Object.keys(regionData).reduce((acc, region) => {
+      const friendliness = regionData[region].friendliness;
+      // Convertir `friendliness` en une couleur allant de rouge vif (-3) à vert vif (3)
+      const green = Math.max(0, 255 + friendliness * 85);
+      const red = Math.max(0, 255 - friendliness * 85);
+      acc[region] = `rgb(${red}, ${green}, 0)`; // Couleur calculée
+      return acc;
+    }, {});
+
+
+      // Injecte les chemins des régions dans la carte SVG
+      const worldMap = document.getElementById('worldMap');
+
+      Object.keys(regions).forEach((region) => {
+        const countryCodes = regions[region]; // Pays de la région
+        countryCodes.forEach((countryCode) => {
+          const country = countries[countryCode];
+          if (country && country.d) {
+            // Créer un chemin pour chaque pays
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', country.d); // Définir le chemin SVG
+            path.setAttribute('fill', regionColors[region] || 'gray'); // Couleur basée sur la région
+            path.setAttribute('stroke', '#000'); // Ajouter un contour noir
+            worldMap.appendChild(path);
+          }
+        });
+      });
+    }
 
   </script>
 </body>

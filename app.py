@@ -125,7 +125,6 @@ async def send_message(message: Message):
                 "user": "user",
                 "trump": "assistant"  # Mapping 'trump' to 'assistant'
             }
-        print(chat_history)
         for interaction in chat_history:
             for key, value in interaction.items():
                 user_message = value['user']['message'] if 'user' in value else "..."
@@ -145,8 +144,6 @@ async def send_message(message: Message):
 
         messages = system + dynamic_history
 
-        print("messages", messages)
-        print("model", model)
         chat_response = client.chat.complete(
             model=model,
             messages=messages
@@ -167,7 +164,10 @@ async def send_message(message: Message):
 
         return {
             "character_response": trump_response,
-            "chat_history": chat_history
+            "chat_history": chat_history,
+            "chat_ended": is_ending,
+            "idea": idea,
+            "idea_is_accepted": idea_is_accepted,
         }
     except Exception as e:
         print(e)

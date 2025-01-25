@@ -66,7 +66,6 @@ def initialize_game():
     world_graph.save_graph_as_edgelist(f'games/game_{game_number}/world_graph.edgelist')
     return game_number
 
-
 def generate_round_context(game_number):
     """randomly generates a context and returns all the prompt elements needed"""
     game_dir = f'games/game_{game_number}/'
