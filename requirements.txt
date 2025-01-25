@@ -1,0 +1,5 @@
+networkx
+numpy
+mistralai
+python-dotenv
+requests
