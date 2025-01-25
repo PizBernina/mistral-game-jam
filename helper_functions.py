@@ -63,25 +63,59 @@ def generate_round_context(game_number):
     contexts_dir = 'original_setup/contexts/'
 
     #generate idea
-    with open(contexts_dir + 'actions.list', 'r') as ideas:
-        idea_list = ideas.readlines()
-        #### TODO
-        
-        idea = idea_list[0].replace('[country]', 'Europe')
-        
-    concern = "How will it impact jobs in America"
-    try:
+    with open(contexts_dir + 'actions.list', 'r') as file:
+        idea_csq = file.readlines()
+        idea_csq = choice(idea_csq)
+        idea, delta_USA, delta_country, delta_friendliness = idea_csq.split(';')
+        delta_friendliness = delta_friendliness[:-2]
+    with open(contexts_dir + 'countries.list', 'r') as f_countries:
+        countries = f_countries.readlines()
+        country = choice(countries)
+    idea = idea.replace('[country]', country[:-2])
+
+    with open(contexts_dir + 'concerns.list', 'r') as f:
+        concerns = f.readlines()
+        concern = choice(concerns)
+
+    with open(contexts_dir + '2nd_characters.list', 'r') as f:
+        advisors = f.readlines()
+        advisor = choice(advisors)
+
+    consequences = {
+        'country': country,
+        'delta_USA': delta_USA,
+        'delta_country': delta_country,
+        'delta_friendliness': delta_friendliness
+    }
+    try:delta_friendliness
         with open(game_dir + 'events.list', 'r') as f:
             events = f.read()
     except FileNotFoundError:
         events = ''
 
-    return idea, concern, events
+    return idea, concern, advisor, events, consequences
 
 def check_end(trump_response):
     """checks if its the end of the sequence returns a tuple (is_ending:bool, idea_is_accepted:bool/Nonetype)"""
     if "I HAD SUCH A GREAT IDEA LET'S DO IT" in trump_response:
         return True, True
-    if "I DECIDED IT WAS A BAD IDEA" in trump_resonse:
+    if "I DECIDED IT WAS A BAD IDEA" in trump_response:
         return True, False
     return False, None
+
+
+def process_ending(idea_is_accepted, game_number, idea):
+    if idea_is_accepted:
+        with open(f'games/game_{game_number}/events.list', 'a') as f:
+            f.write(idea + '\n')
+
+        world_graph = WorldGraph(f'games/game_{game_number}/world_graph.edgelist')
+
+        with open(f'games/game_{game_number}/round_consequences.json', 'r') as f:
+            consequences = json.load()
+            country = consequences['country'] 
+            delta_USA = int(consequences['delta_USA'])
+            delta_country = int(consequences['delta_country'])
+            delta_friendliness = int(consequences['delta_friendliness']) 
+        
+        GDP = world_graph.update_world(world_graph, country, delta_USA, delta_country, delta_friendliness, game_number)

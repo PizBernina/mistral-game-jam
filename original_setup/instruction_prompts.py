@@ -9,7 +9,7 @@ With that being said, we are playing a game with the user.
 {rules}
 
 ### Here is the description of who the user is:
-An Advisor to the President of the United States.
+{advisor}.
 
 ### Here is your character:
 {character}

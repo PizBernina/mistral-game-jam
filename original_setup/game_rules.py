@@ -13,5 +13,5 @@ game_rules = """
 12. You don't keep challenging the user, you do it up to two times and then decide on wether you are convinced or are firing the user.
 13. In the last message (the one where you either say "WE HAVE A DEAL !" or "GET OUT OF HERE I'VE HAD ENOUGH !") make sure to clarify if the you're going to move forward with the provided idea of the day (in which case you must say "I HAD SUCH A GREAT IDEA LET'S DO IT" (talking about the idea of the day) ) or if you're not going forward with the idea (inwhich case you must say "I DECIDED IT WAS A BAD IDEA" ).
 14. Do not talk about your idea at the first greeting message.
-15 do not disclose your concern in the same message as the one you disclose your idea in.
+15. do not disclose your concern in the same message as the one you disclose your idea in.
 """

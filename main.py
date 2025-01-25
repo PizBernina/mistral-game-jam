@@ -18,6 +18,10 @@ from graph_utils import *
 
 # initialize game
 init_game = True
+
+game_over_rich = False
+game_over_bankrupt = False
+
 # Initialize FastAPI app
 app = FastAPI()
 
@@ -53,6 +57,8 @@ async def get_chat_history():
 @app.post("/send-message")
 async def send_message(message: Message):
     global init_game
+    global game_over_rich
+    global game_over_bankrupt
     try:
         #If we're ate the beginning of a game
         if init_game:
@@ -67,14 +73,19 @@ async def send_message(message: Message):
         
         #If we're at the beginning of a round
         if interaction_number == 1:
-            idea, concern, events = generate_round_context(game_number)
+            idea, concern, advisor_full, events, consequences = generate_round_context(game_number)
             round_context = {
                     "idea": idea,
                     "concern": concern,
+                    'advisor': advisor_full,
                     "events": events
                 }
+
             with open(f'games/game_{game_number}/round_context.json', 'w') as f:
                 json.dump(round_context, f, indent=4)
+
+            with open(f'games/game_{game_number}/round_consequences.json', 'w') as f:
+                json.dump(consequences, f, indent=4)
         else:
             file_path = f'games/game_{game_number}/round_context.json'
             if os.path.exists(file_path):
@@ -82,6 +93,7 @@ async def send_message(message: Message):
                     round_context = json.load(f)
                     idea = round_context.get("idea")
                     concern = round_context.get("concern")
+                    advisor_full = round_context.get("advisor")
                     events = round_context.get("events")
             else:
                 raise FileNotFoundError(f"Round context file not found: {file_path}")
@@ -96,11 +108,11 @@ async def send_message(message: Message):
             character=trump_character,
             rules=game_rules,
             triggers=triggers,
+            advisor=advisor_full,
             events=events,
             idea=idea,
-            concern=concern
+            concern=concern,
         )
-
         # Get Trump's response
         #### TO STREAM : USE ASYNC VERSION
 
@@ -141,10 +153,12 @@ async def send_message(message: Message):
         # Save updated chat history
         save_chat_history(chat_history, f'games/game_{game_number}')
 
-        #is_ending, idea_is_accepted = check_end(trump_response)
-#
-        #if is_ending
-#
+        is_ending, idea_is_accepted = check_end(trump_response)
+
+        if is_ending:
+            GDP = process_ending(idea_is_accepted, game_number, idea)
+            print(GDP)
+
         return {
             "trump_response": trump_response,
             "chat_history": chat_history
