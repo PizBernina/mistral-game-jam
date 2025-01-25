@@ -24,61 +24,60 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
-
 class Message(BaseModel):
     message: str
 
 def generate_text(message: Message):
     # Load existing chat history
-        chat_history = load_chat_history()
+    chat_history = load_chat_history()
 
-        # Add user message to history
-        chat_history = update_chat_history(chat_history, user_message=message.message)
+    # Add user message to history
+    chat_history = update_chat_history(chat_history, user_message=message.message)
 
-        # Format the prompt
-        formatted_prompt = instruction_prompt.format(
-            hints=hints,
-            chat_history=chat_history,
-            character=trump_character,
-            rules=game_rules,
-            triggers=triggers
-        )
+    # Format the prompt
+    formatted_prompt = instruction_prompt.format(
+        hints=hints,
+        chat_history=chat_history,
+        character=trump_character,
+        rules=game_rules,
+        triggers=triggers
+    )
 
-        # Get Character's response
-        chat_response = client.chat.complete(
-            model=model,
-            messages=[
-                {
-                    "role": "system",
-                    "content": formatted_prompt
-                },
-                {
-                    "role": "user",
-                    "content": message.message
-                }
-            ]
-        )
-        clean_response = chat_response.choices[0].message.content
+    # Get Character's response
+    chat_response = client.chat.complete(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": formatted_prompt
+            },
+            {
+                "role": "user",
+                "content": message.message
+            }
+        ]
+    )
+    clean_response = chat_response.choices[0].message.content
 
-        # Add character response to history
-        chat_history = update_chat_history(chat_history, character_response=clean_response)
+    # Add character response to history
+    chat_history = update_chat_history(chat_history, character_response=clean_response)
 
-        # Save updated chat history
-        save_chat_history(chat_history)
+    # Save updated chat history
+    save_chat_history(chat_history)
 
-        return {
-            "character_response": clean_response,
-            "chat_history": chat_history
-        }
+    return {
+        "character_response": clean_response,
+        "chat_history": chat_history
+    }
 
 @app.post("/api/generate-text")
 async def inference(message: Message):
     return generate_text(message=message)
 
-
 @app.get("/chat-history", tags=["History"])
 def get_chat_history(request: Request):
     chat_history = load_chat_history()
     return {"chat_history": chat_history}
+
+# Mount static files AFTER defining API routes
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
