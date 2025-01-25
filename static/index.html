@@ -32,27 +32,46 @@
       const chatWindow = document.getElementById('chatWindow');
       const messageDiv = document.createElement('div');
       messageDiv.className = `message ${isUser ? 'user' : 'trump'}`;
-      
+
       if (!isUser) {
         const img = document.createElement('jpg');
         img.src = '/images/donald_trump.jpg';
         img.alt = 'Trump';
         messageDiv.appendChild(img);
       }
-      
+
       const contentDiv = document.createElement('div');
       contentDiv.className = 'message-content';
       contentDiv.textContent = message;
-      
+
       messageDiv.appendChild(contentDiv);
       chatWindow.appendChild(messageDiv);
       chatWindow.scrollTop = chatWindow.scrollHeight;
+      return contentDiv
+    }
+
+    function updateChatMessage(messageDiv, messageContent) {
+      messageDiv.textContent = messageContent;
+    }
+
+    function typeMessage(element, message, delay = 10) {
+      let index = 0;
+
+      // Use setInterval to display one letter at a time
+      const interval = setInterval(() => {
+        if (index < message.length) {
+          element.textContent += message[index]; // Append the next letter
+          index++;
+        } else {
+          clearInterval(interval); // Stop when the message is fully displayed
+        }
+      }, delay);
     }
 
     function sendMessage() {
       const messageInput = document.getElementById('messageInput');
       const message = messageInput.value.trim();
-      
+
       if (!message) return;
 
       // Add user message to chat
@@ -60,6 +79,14 @@
 
       // Clear input
       messageInput.value = '';
+
+      const trumpMessageDiv = addMessageToChat("Donald Trump is typing", false);
+      let dots = 0;
+      const typingInterval = setInterval(() => {
+        dots = (dots + 1) % 4; // Cycle through 0, 1, 2, 3 dots
+        const dotsText = '.'.repeat(dots); // Generate dots
+        updateChatMessage(trumpMessageDiv, `Donald Trump is typing${dotsText}`);
+      }, 200); // Update every 500ms
 
       // Send to API
       fetch('/api/generate-text', {
@@ -72,7 +99,13 @@
       .then(response => response.json())
       .then(data => {
         // Add Trump's response to chat
-        addMessageToChat(data.character_response, false);
+        clearInterval(typingInterval);
+
+        updateChatMessage(trumpMessageDiv, "");
+
+        //updateChatMessage(trumpMessageDiv, data.character_response)
+        typeMessage(trumpMessageDiv, data.character_response)
+        //addMessageToChat(data.character_response, false);
       })
       .catch(error => {
         console.error('Error:', error);
