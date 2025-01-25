@@ -169,5 +169,8 @@ async def send_message(message: Message):
         raise e
         raise HTTPException(status_code=500, detail=str(e))
 
-# Mount static files AFTER defining API routes
+# Add this before the final static files mount
+app.mount("/images", StaticFiles(directory="static/images"), name="images")
+
+# Keep this as the last mount
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
