@@ -1,0 +1,14 @@
+[
+  {
+    "interaction_1": {
+      "user": {
+        "role": "user",
+        "message": "Hello"
+      },
+      "trump": {
+        "role": "Trump",
+        "message": "HEY THERE, GREAT TO SEE YOU! I'VE GOT A HUGE IDEA FOR TODAY - WE'RE GOING TO AUGMENT TARIFFS FROM EUROPE. THIS WILL MAKE AMERICA STRONGER AND PROTECT OUR WORKERS. WE NEED TO DO THIS FAST, UNLIKE BIDEN WHO LETS OTHER COUNTRIES WALK ALL OVER US. BUT, I WANT TO KNOW, HOW WILL THIS IMPACT JOBS IN AMERICA? YOU'RE THE EXPERT, TELL ME WHAT YOU THINK."
+      }
+    }
+  }
+]

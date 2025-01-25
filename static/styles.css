@@ -1,194 +1,212 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    display: flex;
-    font-family: Arial, sans-serif;
-    background-color: #000;
-    color: #fff;
-  }
-  
-  .content {
-    flex: 1;
-    background-color: #fff;
-  }
-  
-  .chatbot {
-    width: 50%;
-    height: 100vh;
-    border-right: 1px solid #333;
-    background-color: #000;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .chatbot-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    width: 100%;
-  }
-  
-  .chatbot-header img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .chatbot-messages {
-    flex: 1;
-    overflow-y: scroll;
-    padding: 10px;
-    scroll-behavior: smooth;
-  }
-  
-  .chatbot-messages::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .message {
-    display: flex;
-    margin-bottom: 15px;
-  }
-  
-  .message img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .message-content {
-    border-radius: 15px;
-    padding: 10px;
-    max-width: 70%;
-  }
-  
-  .message.trump {
-    justify-content: flex-start;
-  }
-  
-  .message.trump .message-content {
-    background-color: #333;
-    color: #e1e8ed;
-  }
-  
-  .message.user {
-    justify-content: flex-end;
-  }
-  
-  .message.user .message-content {
-    background-color: #1da1f2;
-    color: #fff;
-  }
-  
-  .chatbot-input {
-    border-top: 1px solid #333;
-    padding: 10px;
-    display: flex;
-  }
-  
-  .chatbot-input input {
-    flex: 1;
-    background-color: #192734;
-    border: 1px solid #333;
-    border-radius: 20px;
-    padding: 10px;
-    color: #e1e8ed;
-    outline: none;
-    font-size: 14px;
-  }
-  
-  .chatbot-input input::placeholder {
-    color: #71767b;
-  }
-  
-  .chatbot-input button {
-    margin-left: 10px;
-    background-color: #1da1f2;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 15px;
-    cursor: pointer;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    text-align: center;
-  }
+body {
+  display: flex;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+}
 
-  .profile-image {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 12px;
-  }
+/* ====================================
+ NOUVEAU : la colonne de droite (carte)
+ ==================================== */
+.map-container {
+  width: 50%;
+  height: 100vh;
+  background-color: #fff; /* fond blanc */
+  overflow: auto; /* permet de scroller si besoin */
+}
 
-  .profile-image img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-  }
+.map-container svg {
+  width: 100%;
+  height: 100%;
+}
 
-  .profile-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0;
-  }
+/* ====================================
+ Colonne de gauche : Chatbot (inchangé)
+ ==================================== */
+.content {
+  flex: 1;
+  background-color: #fff;
+}
 
-  .profile-handle {
-    color: #536471;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
+.chatbot {
+  width: 50%;
+  height: 100vh;
+  border-right: 1px solid #333;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+}
 
-  .profile-description {
-    margin: 0.5rem 0;
-    line-height: 1.4;
-  }
+.chatbot-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  width: 100%;
+}
 
-  .profile-text {
-    text-align: center;
-    width: 100%;
-  }
+.chatbot-header img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  text-align: center;
+}
 
-  .profile-text h2 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-  }
-  
-  .profile-text span {
-    color: #8899a6;
-    font-size: 14px;
-    display: block;
-    text-align: center;
-  }
-  
-  .profile-text p {
-    margin: 4px 0 0 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #ffffff;
-    text-align: center;
-  }
+.chatbot-messages {
+  flex: 1;
+  overflow-y: scroll;
+  padding: 10px;
+  scroll-behavior: smooth;
+}
 
-  .divider {
-    width: 100%;
-    height: 1px;
-    background-color: #2f3336;
-    margin-top: 16px;
-  }
+.chatbot-messages::-webkit-scrollbar {
+  display: none;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.message img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-content {
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 70%;
+}
+
+.message.trump {
+  justify-content: flex-start;
+}
+
+.message.trump .message-content {
+  background-color: #333;
+  color: #e1e8ed;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.user .message-content {
+  background-color: #1da1f2;
+  color: #fff;
+}
+
+.chatbot-input {
+  border-top: 1px solid #333;
+  padding: 10px;
+  display: flex;
+}
+
+.chatbot-input input {
+  flex: 1;
+  background-color: #192734;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 10px;
+  color: #e1e8ed;
+  outline: none;
+  font-size: 14px;
+}
+
+.chatbot-input input::placeholder {
+  color: #71767b;
+}
+
+.chatbot-input button {
+  margin-left: 10px;
+  background-color: #1da1f2;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.profile-image {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.profile-image img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.profile-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.profile-handle {
+  color: #536471;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-description {
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.profile-text {
+  text-align: center;
+  width: 100%;
+}
+
+.profile-text h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+}
+
+.profile-text span {
+  color: #8899a6;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+}
+
+.profile-text p {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #ffffff;
+  text-align: center;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #2f3336;
+  margin-top: 16px;
+}
