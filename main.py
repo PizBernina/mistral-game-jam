@@ -68,9 +68,26 @@ async def send_message(message: Message):
         #If we're at the beginning of a round
         if interaction_number == 1:
             idea, concern, events = generate_round_context(game_number)
-        
+            round_context = {
+                    "idea": idea,
+                    "concern": concern,
+                    "events": events
+                }
+            with open(f'games/game_{game_number}/round_context.json', 'w') as f:
+                json.dump(round_context, f, indent=4)
+        else:
+            file_path = f'games/game_{game_number}/round_context.json'
+            if os.path.exists(file_path):
+                with open(file_path, 'r') as f:
+                    round_context = json.load(f)
+                    idea = round_context.get("idea")
+                    concern = round_context.get("concern")
+                    events = round_context.get("events")
+            else:
+                raise FileNotFoundError(f"Round context file not found: {file_path}")
+
         # Add user message to history
-        print(1, chat_history)
+
         chat_history = update_chat_history(chat_history, user_message=message.message)
         # Format the prompt
         formatted_prompt = instruction_prompt.format(
@@ -113,6 +130,8 @@ async def send_message(message: Message):
             "chat_history": chat_history
         }
     except Exception as e:
+        print(e)
+        raise e
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

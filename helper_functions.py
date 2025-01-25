@@ -12,7 +12,6 @@ def load_character_data():
 
 def load_chat_history(game_root):
     history_path = game_root + '/chat_history.json'
-    print('ici', history_path)
     try:
         with open(history_path, 'r') as file:
             return json.load(file)
