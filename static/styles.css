@@ -214,8 +214,18 @@
     left: unset;
     transform: none;
     width: 200px;
-    height: 40px;
+    height: 32px;
     overflow: hidden;
+    background-color: #1da1f2;
+  }
+
+  .popup.minimized .popup-content {
+    display: none;
+  }
+
+  .popup.minimized .popup-header {
+    padding: 4px 8px;
+    height: 32px;
   }
 
   .popup-header {
@@ -301,4 +311,40 @@
 
   #gameOverPopup .popup-ok {
     margin: 5px 0;
+  }
+
+  .intro-frame {
+    width: 800px;
+    height: 650px;
+    border: none;
+    overflow: hidden;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+  }
+
+  #gamePopup {
+    width: auto;
+    background-color: transparent;
+    padding: 0;
+  }
+
+  #gamePopup .popup-content {
+    padding: 0;
+    position: relative;
+  }
+
+  #gamePopup .popup-ok {
+    position: absolute;
+    bottom: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: rgba(29, 161, 242, 0.8);
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+
+  #gamePopup .popup-ok:hover {
+    background-color: rgba(29, 161, 242, 1);
   }

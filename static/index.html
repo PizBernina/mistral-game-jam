@@ -29,7 +29,7 @@
 
   <div class="popup" id="gamePopup">
     <div class="popup-header">
-      <span class="popup-title">Game intro</span>
+      <span class="popup-title">Game Intro</span>
       <div class="popup-controls">
         <button class="control-btn minimize">−</button>
         <button class="control-btn maximize">□</button>
@@ -37,9 +37,8 @@
       </div>
     </div>
     <div class="popup-content">
-      <p>Welcome to the 21st century—where America is thriving on the edge of total collapse! Wokeness has spread like a glorious plague, the Democrats have worked their magic to send inflation soaring, and oil production? Oh, it's practically a fairy tale now. But don't worry, salvation is here! A brand-new, ultra-competent (and just a little unpredictable) president has stepped in to save the day. What could possibly go wrong?</p>
-      <img src="/images/trump_popup.jpg" alt="USA Flag" class="popup-gif">
-      <button class="popup-ok">OK</button>
+      <iframe src="intro.html" class="intro-frame"></iframe>
+      <button class="popup-ok">Start Game</button>
     </div>
   </div>
 
@@ -121,17 +120,24 @@
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-      // Show initial game popup after 2 seconds
+      // Load the intro content
+      fetch('./intro.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('introContent').innerHTML = html;
+        });
+
+      // Show popup after content is loaded
       setTimeout(() => {
         const popup = document.getElementById('gamePopup');
         popup.style.display = 'block';
       }, 2000);
 
       // Show game over popup after 5 seconds
-      setTimeout(() => {
-        const gameOverPopup = document.getElementById('gameOverPopup');
-        gameOverPopup.style.display = 'block';
-      }, 5000);
+     //setTimeout(() => {
+     //   const gameOverPopup = document.getElementById('gameOverPopup');
+     //   gameOverPopup.style.display = 'block';
+     // }, 5000);
 
       // Initialize game popup controls
       const popup = document.getElementById('gamePopup');
