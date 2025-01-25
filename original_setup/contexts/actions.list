@@ -1,7 +1,7 @@
-increase tariffs against [country];25;-25;-1
+Increase tariffs against [country];25;-25;-1
 Post a tiktok insulting leader of [country];-5;0;-1
 Post a tweet praising leader of [country];0;0;1
-send [media] to [entity] on the [platform] insulting leader of [country];-5;0;-1
+Post tiktok to insulting leader of [country];-5;0;-1
 buy [country];-40;40;-1
 send spying atmospheric balloon over [country];5;-5;-1
 send marine troops to [country];-15;-10;-2
@@ -10,7 +10,7 @@ trigger a war with [country];-30;-30;-3
 Organize a fixed football game between U.S. and [country];15;5;1
 Rename a [country];0;0;-1
 Organize a patriotic shooting contest in [country];-5;10;1
-Invite leader of [country] in [trump_place];-5;5;1
+Invite leader of [country] to Mar-a-Lago for a vacation;-5;5;1
 Visit [country] with Air Force One;-10;-5;1
 Take leader of [country] for a 'friendly' tour in Air Force One;-5;-15;-1
 Kick [country] out of NATO;-20;10;-1

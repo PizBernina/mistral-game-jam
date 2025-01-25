@@ -67,11 +67,12 @@ def generate_round_context(game_number):
         idea_csq = file.readlines()
         idea_csq = choice(idea_csq)
         idea, delta_USA, delta_country, delta_friendliness = idea_csq.split(';')
-        delta_friendliness = delta_friendliness[:-2]
+        delta_friendliness = delta_friendliness.split()[0]
     with open(contexts_dir + 'countries.list', 'r') as f_countries:
         countries = f_countries.readlines()
-        country = choice(countries)
-    idea = idea.replace('[country]', country[:-2])
+        country = choice(countries).split()[0]
+
+    idea = idea.replace('[country]', country)
 
     with open(contexts_dir + 'concerns.list', 'r') as f:
         concerns = f.readlines()
@@ -87,7 +88,7 @@ def generate_round_context(game_number):
         'delta_country': delta_country,
         'delta_friendliness': delta_friendliness
     }
-    try:delta_friendliness
+    try:
         with open(game_dir + 'events.list', 'r') as f:
             events = f.read()
     except FileNotFoundError:
@@ -112,10 +113,12 @@ def process_ending(idea_is_accepted, game_number, idea):
         world_graph = WorldGraph(f'games/game_{game_number}/world_graph.edgelist')
 
         with open(f'games/game_{game_number}/round_consequences.json', 'r') as f:
-            consequences = json.load()
+            consequences = json.load(f)
             country = consequences['country'] 
             delta_USA = int(consequences['delta_USA'])
             delta_country = int(consequences['delta_country'])
             delta_friendliness = int(consequences['delta_friendliness']) 
         
-        GDP = world_graph.update_world(world_graph, country, delta_USA, delta_country, delta_friendliness, game_number)
+        GDP = world_graph.update_world(country, delta_USA, delta_country, delta_friendliness, game_number)
+
+        return GDP

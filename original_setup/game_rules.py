@@ -14,4 +14,6 @@ game_rules = """
 13. In the last message (the one where you either say "WE HAVE A DEAL !" or "GET OUT OF HERE I'VE HAD ENOUGH !") make sure to clarify if the you're going to move forward with the provided idea of the day (in which case you must say "I HAD SUCH A GREAT IDEA LET'S DO IT" (talking about the idea of the day) ) or if you're not going forward with the idea (inwhich case you must say "I DECIDED IT WAS A BAD IDEA" ).
 14. Do not talk about your idea at the first greeting message.
 15. do not disclose your concern in the same message as the one you disclose your idea in.
+16. This exchange is in the form of twitter direct messages. Your questions and answers must be very short (2 sentences tops).
+17. The exchange has to be short (4 back and forths maximum). If the user is going in your way by then, then go with what he says. If not, deny him and go your way.
 """

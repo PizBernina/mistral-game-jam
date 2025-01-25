@@ -26,13 +26,15 @@ class WorldGraph(nx.DiGraph):
     
     def update_world(self, country, delta_USA, delta_country, delta_friendliness, game_number):
         """updates world graph and returns USA GDP"""
-        self.nodes['United_states']['money'] += delta_USA
+        self.nodes['United-States']['money'] += delta_USA
         self.nodes[country]['money'] += delta_country
-        self['China']['Taiwan']['value'] += delta_friendliness
+        self['United-States'][country]['value'] += delta_friendliness
         #clip between -4 and 4
-        self['China']['Taiwan']['value']  = max(-4, min(self['China']['Taiwan']['value'] , 4))
+        self['United-States'][country]['value']  = max(-4, min(self['United-States'][country]['value'] , 4))
         self.save_graph_as_edgelist(f'games/game_{game_number}/world_graph.edgelist')
-        return self.nodes['United_states']['money']
+        print(self['United-States'][country])
+        print(self.nodes['United-States'])
+        return self.nodes['United-States']['money']
 
 
     def get_countries_at_war(self):
@@ -141,6 +143,9 @@ class WorldGraph(nx.DiGraph):
 
 if __name__ == '__main__':
     G = WorldGraph('original_setup/contexts/world_map.edgelist')
+    print(G.nodes['United-States'])
+    G.nodes['United-States']['money'] += 5
+    print(G.nodes['United-States'])
     print(G.push_data_to_front())
 
     G.save_graph_as_edgelist('test.edgelist')
