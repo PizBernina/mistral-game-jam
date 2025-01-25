@@ -74,16 +74,11 @@ def generate_text(message: Message):
         }
 
 @app.post("/api/generate-text")
-def inference(message: Message, request: Request):
-    if request.headers.get("origin") != "https://Mistral-AI-Game-Jam/team13.static.hf.space":
-        return 204
+async def inference(message: Message):
     return generate_text(message=message)
 
 
 @app.get("/chat-history", tags=["History"])
 def get_chat_history(request: Request):
-    if request.headers.get("origin") != "https://Mistral-AI-Game-Jam/team13.static.hf.space":
-        return 204
-    else:
-        chat_history = load_chat_history()
-        return {"chat_history": chat_history}
+    chat_history = load_chat_history()
+    return {"chat_history": chat_history}
