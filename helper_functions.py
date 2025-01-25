@@ -83,6 +83,6 @@ def check_end(trump_response):
     """checks if its the end of the sequence returns a tuple (is_ending:bool, idea_is_accepted:bool/Nonetype)"""
     if "I HAD SUCH A GREAT IDEA LET'S DO IT" in trump_response:
         return True, True
-    if "I DECIDED IT WAS A BAD IDEA" in trump_resonse:
+    if "I DECIDED IT WAS A BAD IDEA" in trump_response:
         return True, False
     return False, None
