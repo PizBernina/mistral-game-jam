@@ -14,7 +14,7 @@
       <div class="profile-text">
         <h2>Donald J. Trump</h2>
         <span>@realDonaldTrump</span>
-        <p>45th President of the United States of America<br/>
+        <p>45th & 47th President 🇺🇸<br/>
            DonaldJTrump.com<br/>
            A rejoint X en mars 2009</p>
       </div>
@@ -24,6 +24,35 @@
     <div class="chatbot-input">
       <input type="text" id="messageInput" placeholder="Type your message...">
       <button id="sendButton">Send</button>
+    </div>
+  </div>
+
+  <div class="popup" id="gamePopup">
+    <div class="popup-header">
+      <span class="popup-title">Game intro</span>
+      <div class="popup-controls">
+        <button class="control-btn minimize">−</button>
+        <button class="control-btn maximize">□</button>
+        <button class="control-btn close">×</button>
+      </div>
+    </div>
+    <div class="popup-content">
+      <p>Welcome to the 21st century—where America is thriving on the edge of total collapse! Wokeness has spread like a glorious plague, the Democrats have worked their magic to send inflation soaring, and oil production? Oh, it's practically a fairy tale now. But don't worry, salvation is here! A brand-new, ultra-competent (and just a little unpredictable) president has stepped in to save the day. What could possibly go wrong?</p>
+      <img src="/images/trump_popup.jpg" alt="USA Flag" class="popup-gif">
+      <button class="popup-ok">OK</button>
+    </div>
+  </div>
+
+  <div class="popup" id="gameOverPopup">
+    <div class="popup-header">
+      <span class="popup-title">Game Over</span>
+      <div class="popup-controls">
+        <button class="control-btn close">×</button>
+      </div>
+    </div>
+    <div class="popup-content">
+      <img src="/images/game_over.png" alt="Game Over" class="popup-gif">
+      <button class="popup-ok">Try Again</button>
     </div>
   </div>
 
@@ -89,6 +118,101 @@
         event.preventDefault();
         sendMessage();
       }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Show initial game popup after 2 seconds
+      setTimeout(() => {
+        const popup = document.getElementById('gamePopup');
+        popup.style.display = 'block';
+      }, 2000);
+
+      // Show game over popup after 5 seconds
+      setTimeout(() => {
+        const gameOverPopup = document.getElementById('gameOverPopup');
+        gameOverPopup.style.display = 'block';
+      }, 5000);
+
+      // Initialize game popup controls
+      const popup = document.getElementById('gamePopup');
+      const minimizeBtn = popup.querySelector('.minimize');
+      const maximizeBtn = popup.querySelector('.maximize');
+      const closeBtn = popup.querySelector('.close');
+      const okBtn = popup.querySelector('.popup-ok');
+
+      minimizeBtn.addEventListener('click', () => {
+        popup.classList.add('minimized');
+      });
+
+      maximizeBtn.addEventListener('click', () => {
+        popup.classList.remove('minimized');
+      });
+
+      closeBtn.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+
+      okBtn.addEventListener('click', () => {
+        popup.classList.add('minimized');
+      });
+
+      // Make the popup draggable
+      const header = popup.querySelector('.popup-header');
+      let isDragging = false;
+      let currentX;
+      let currentY;
+      let initialX;
+      let initialY;
+      let xOffset = 0;
+      let yOffset = 0;
+
+      header.addEventListener('mousedown', dragStart);
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('mouseup', dragEnd);
+
+      function dragStart(e) {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+
+        if (e.target === header) {
+          isDragging = true;
+        }
+      }
+
+      function drag(e) {
+        if (isDragging) {
+          e.preventDefault();
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+          xOffset = currentX;
+          yOffset = currentY;
+
+          setTranslate(currentX, currentY, popup);
+        }
+      }
+
+      function setTranslate(xPos, yPos, el) {
+        el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+      }
+
+      function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+      }
+
+      // Initialize game over popup controls
+      const gameOverPopup = document.getElementById('gameOverPopup');
+      const gameOverCloseBtn = gameOverPopup.querySelector('.close');
+      const gameOverOkBtn = gameOverPopup.querySelector('.popup-ok');
+
+      gameOverCloseBtn.addEventListener('click', () => {
+        location.reload();  // Reload page on close
+      });
+
+      gameOverOkBtn.addEventListener('click', () => {
+        location.reload();  // Reload page on Try Again
+      });
     });
   </script>
 </body>
