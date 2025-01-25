@@ -7,8 +7,9 @@ def load_character_data():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(current_dir, 'original_setup/trump.character.json')
     
-    with open(json_path, 'r') as file:
+    with open(json_path, 'r', encoding='utf-8') as file:
         return json.load(file)
+
 
 def load_chat_history(game_root):
     history_path = game_root + '/chat_history.json'
