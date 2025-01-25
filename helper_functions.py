@@ -13,7 +13,6 @@ def load_character_data():
 
 def load_chat_history(game_root):
     history_path = game_root + '/chat_history.json'
-    print('ici', history_path)
     try:
         with open(history_path, 'r') as file:
             return json.load(file)
@@ -79,3 +78,11 @@ def generate_round_context(game_number):
         events = ''
 
     return idea, concern, events
+
+def check_end(trump_response):
+    """checks if its the end of the sequence returns a tuple (is_ending:bool, idea_is_accepted:bool/Nonetype)"""
+    if "I HAD SUCH A GREAT IDEA LET'S DO IT" in trump_response:
+        return True, True
+    if "I DECIDED IT WAS A BAD IDEA" in trump_resonse:
+        return True, False
+    return False, None

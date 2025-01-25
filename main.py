@@ -62,16 +62,32 @@ async def send_message(message: Message):
             game_number = len(os.listdir('games/'))
 
         # Load existing chat history
-        print(f'{game_number}')
         chat_history = load_chat_history(f'games/game_{game_number}')
-        print(chat_history)
         interaction_number = len(chat_history) + 1
         
         #If we're at the beginning of a round
         if interaction_number == 1:
             idea, concern, events = generate_round_context(game_number)
-        
+            round_context = {
+                    "idea": idea,
+                    "concern": concern,
+                    "events": events
+                }
+            with open(f'games/game_{game_number}/round_context.json', 'w') as f:
+                json.dump(round_context, f, indent=4)
+        else:
+            file_path = f'games/game_{game_number}/round_context.json'
+            if os.path.exists(file_path):
+                with open(file_path, 'r') as f:
+                    round_context = json.load(f)
+                    idea = round_context.get("idea")
+                    concern = round_context.get("concern")
+                    events = round_context.get("events")
+            else:
+                raise FileNotFoundError(f"Round context file not found: {file_path}")
+
         # Add user message to history
+
         chat_history = update_chat_history(chat_history, user_message=message.message)
         # Format the prompt
         formatted_prompt = instruction_prompt.format(
@@ -109,11 +125,17 @@ async def send_message(message: Message):
         # Save updated chat history
         save_chat_history(chat_history, f'games/game_{game_number}')
 
+        #is_ending, idea_is_accepted = check_end(trump_response)
+#
+        #if is_ending
+#
         return {
             "trump_response": trump_response,
             "chat_history": chat_history
         }
     except Exception as e:
+        print(e)
+        raise e
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
