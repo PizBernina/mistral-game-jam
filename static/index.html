@@ -3,47 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Space template</title>
+  <title>🍊 Trump Diplomacy</title>
+  <style>
+    .chat-window {
+      height: 400px;
+      width: 100%;
+      max-width: 600px;
+      border: 1px solid #ccc;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .user-message {
+      background-color: #e3f2fd;
+      margin-left: 20%;
+    }
+    .trump-message {
+      background-color: #ffebee;
+      margin-right: 20%;
+    }
+    .input-container {
+      display: flex;
+      gap: 10px;
+      max-width: 600px;
+    }
+    #messageInput {
+      flex-grow: 1;
+      padding: 8px;
+    }
+  </style>
 </head>
 <body>
-  🍊 diplomacy<br/>
-  <input type="text" id="value1Input" placeholder="Enter value1">
-  <button id="sendRequest">Send Request</button>
-  <pre id="demo_output"></pre>
-  <script>
-    function sendRequest() {
-      const value1 = document.getElementById("value1Input").value;
-      const DEMO_JSON = {
-        "key1": value1,
-        "key2": "value2"
-      };
+  <h1>🍊 Trump Diplomacy</h1>
+  <div class="chat-window" id="chatWindow"></div>
+  <div class="input-container">
+    <input type="text" id="messageInput" placeholder="Type your message...">
+    <button id="sendButton">Send</button>
+  </div>
 
-      document.getElementById("demo_output").innerHTML = "Loading...";
+  <script>
+    function addMessageToChat(message, isUser) {
+      const chatWindow = document.getElementById('chatWindow');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${isUser ? 'user-message' : 'trump-message'}`;
+      messageDiv.textContent = message;
+      chatWindow.appendChild(messageDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const message = messageInput.value.trim();
       
-      fetch('/api/test', {
+      if (!message) return;
+
+      // Add user message to chat
+      addMessageToChat(message, true);
+
+      // Clear input
+      messageInput.value = '';
+
+      // Send to API
+      fetch('/api/generate-text', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(DEMO_JSON),
+        body: JSON.stringify({ message: message })
       })
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById("demo_output").innerHTML = JSON.stringify(data, null, 2);
-        })
-        .catch(error => {
-          document.getElementById("demo_output").innerHTML = 'Error: ' + error;
-        });
+      .then(response => response.json())
+      .then(data => {
+        // Add Trump's response to chat
+        addMessageToChat(data.character_response, false);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        addMessageToChat('Error: Failed to get response', false);
+      });
     }
 
     // Trigger on button click
-    document.getElementById("sendRequest").addEventListener("click", sendRequest);
+    document.getElementById('sendButton').addEventListener('click', sendMessage);
 
-    // Trigger on Enter key in input field
-    document.getElementById("value1Input").addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
+    // Trigger on Enter key
+    document.getElementById('messageInput').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
         event.preventDefault();
-        sendRequest();
+        sendMessage();
       }
     });
   </script>
