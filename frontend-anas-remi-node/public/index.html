@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trump Game</title>
+    <link href="dist/svgMap.css" rel="stylesheet" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        font-family: Arial, sans-serif;
+        background-color: #000; /* Fond noir */
+        color: #fff;
+      }
+
+      .chatbot {
+        width: 33%; /* 1/3 de l'écran */
+        height: 100vh;
+        border-right: 1px solid #333;
+        background-color: #000; /* Fond noir */
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header du chat */
+      .chatbot-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #333;
+      }
+
+      .chatbot-header img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      .chatbot-header .name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .chatbot-header .handle {
+        font-size: 14px;
+        color: #71767b;
+        margin-bottom: 10px;
+      }
+
+      .chatbot-header .description {
+        font-size: 14px;
+        color: #e1e8ed;
+        text-align: center;
+      }
+
+      /* Messages */
+      .chatbot-messages {
+        flex: 1;
+        overflow-y: scroll; /* Permet le défilement */
+        padding: 10px;
+        scroll-behavior: smooth; /* Défilement fluide */
+      }
+
+      .chatbot-messages::-webkit-scrollbar {
+        display: none; /* Masquer la barre de défilement */
+      }
+
+      .message {
+        display: flex;
+        margin-bottom: 15px;
+      }
+
+      .message img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .message-content {
+        border-radius: 15px;
+        padding: 10px;
+        max-width: 70%;
+      }
+
+      .message.trump {
+        justify-content: flex-start; /* Aligné à gauche */
+      }
+
+      .message.trump .message-content {
+        background-color: #333; /* Messages de Trump en gris foncé */
+        color: #e1e8ed; /* Texte blanc */
+      }
+
+      .message.user {
+        justify-content: flex-end; /* Aligné à droite */
+      }
+
+      .message.user .message-content {
+        background-color: #1da1f2; /* Messages de l'utilisateur en bleu */
+        color: #fff; /* Texte blanc */
+      }
+
+      .timestamp {
+        font-size: 12px;
+        color: #71767b;
+        margin-top: 5px;
+      }
+
+      /* Input section */
+      .chatbot-input {
+        border-top: 1px solid #333;
+        padding: 10px;
+        display: flex;
+      }
+
+      .chatbot-input input {
+        flex: 1;
+        background-color: #192734;
+        border: 1px solid #333;
+        border-radius: 20px;
+        padding: 10px;
+        color: #e1e8ed;
+        outline: none;
+        font-size: 14px;
+      }
+
+      .chatbot-input input::placeholder {
+        color: #71767b; /* Texte gris clair pour le placeholder */
+      }
+
+      .chatbot-input button {
+        margin-left: 10px;
+        background-color: #1da1f2;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 15px;
+        cursor: pointer;
+      }
+
+      /* Empty white section (côté droit) */
+      .content {
+        flex: 1; /* 2/3 de l'écran */
+        background-color: #fff;
+      }
+    </style>
+    <script src="dist/svgMap.js" defer></script>
+    <script src="data/gdp.js" defer></script>
+  </head>
+  <body>
+    <div class="chatbot">
+      <!-- Header -->
+      <div class="chatbot-header">
+        <img src="images/donald_trump.jpg" alt="Donald Trump" />
+        <div class="name">Donald J. Trump</div>
+        <div class="handle">@realDonaldTrump</div>
+        <div class="description">
+          45th President of the United States of America <br />
+          DonaldJTrump.com<br />
+          A rejoint X en mars 2009
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="chatbot-messages">
+        <div class="message trump">
+          <img src="images/donald_trump.jpg" alt="Trump" />
+          <div>
+            <div class="message-content">
+              I hear you want to talk to me. What’s on your mind? It’ll be
+              great, believe me.
+            </div>
+            <div class="timestamp" id="timestamp-trump"></div>
+          </div>
+        </div>
+
+        <!-- <div class="message user">
+        <img src="images/user.jpg" alt="User">
+        <div>
+          <div class="message-content">
+            That's not a good idea, Mr. President!
+          </div>
+          <div class="timestamp" id="timestamp-user"></div>
+        </div>
+      </div> -->
+
+        <!-- <div class="message trump" id="trump-loading">
+        <img src="images/donald_trump.jpg" alt="Trump">
+        <div>
+          <div class="message-content">
+            Donald is typing...
+          </div>
+          <div class="timestamp" id="timestamp-trump"></div>
+        </div>
+      </div> -->
+      </div>
+
+      <!-- Input -->
+      <div class="chatbot-input">
+        <input type="text" placeholder="Écrire un message..." />
+        <button>Send</button>
+      </div>
+    </div>
+
+    <!-- Empty white section -->
+    <div class="content">
+      <div id="svgMapGPD" style="height: 100%"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Ajouter les timestamps actuels
+        const currentDate = new Date();
+        const options = {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        };
+        const formattedDate = currentDate.toLocaleDateString("fr-FR", options);
+        document.getElementById("timestamp-trump").textContent = formattedDate;
+        document.getElementById("timestamp-user").textContent = formattedDate;
+
+        // Initialiser la carte
+        new svgMap({
+          targetElementID: "svgMapGPD",
+          data: svgMapDataGPD,
+          mouseWheelZoomEnabled: true,
+          mouseWheelZoomWithKey: true,
+        });
+      });
+    </script>
+
+    <script>
+      function callAPI(message) {
+        // attend 4 secondes avant de répondre
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(
+              `You sayed ${message}, LLM fake answer : I am the best president ever!`
+            );
+          }, 4000);
+        });
+      }
+
+      async function createTrumpMessage(newMessage) {
+        // attend 300ms avant de répondre (look like typing)
+
+
+        chatbotMessages = document.querySelector(".chatbot-messages");
+
+        ele = document.createElement("div");
+        ele.classList.add("message", "trump");
+        ele.innerHTML = `
+            <img src="images/donald_trump.jpg" alt="Trump">
+            <div class="message-content">
+              Donald is typing...
+            </div>
+            <div class="timestamp">${new Date().toLocaleString("fr-FR", {
+              hour: "numeric",
+              minute: "numeric",
+            })}</div>
+          `;
+        chatbotMessages.appendChild(ele);
+
+        messageContent = ele.querySelector(".message-content");
+
+        trumpMessageElement = ele;
+
+        // Initialisation des variables
+        let dots = "";
+        let interval;
+
+        // Fonction pour mettre à jour les points
+        function updateTrumpMessage() {
+          // Ajouter un point ou réinitialiser les points
+          if (dots.length < 3) {
+            dots += ".";
+          } else {
+            dots = "";
+          }
+
+          // Mettre à jour le texte dans l'élément HTML
+          // trumpMessageElement.textContent = `Donald is typing${dots}`;
+          messageContent.textContent = `Donald is typing${dots}`;
+        }
+
+        // Démarrer l'intervalle pour mettre à jour toutes les 0.5 secondes
+        interval = setInterval(updateTrumpMessage, 700);
+
+        callAPI(newMessage).then((response) => {
+          messageContent.textContent = "";
+          // Mettre à jour le message de Trump
+          // trumpMessageElement.textContent = response;
+          let index = 0;
+          function addLetter() {
+              if (index < response.length) {
+                  messageContent.textContent += response[index];
+                  index++;
+                  setTimeout(addLetter, 25); // Attend 50 ms avant d'ajouter la prochaine lettre
+              }
+          }
+          addLetter();
+          
+          // messageContent.textContent = response;
+          // Arrêter l'intervalle
+          clearInterval(interval);
+        });
+      }
+
+      // Récupérer les éléments
+      const input = document.querySelector(".chatbot-input input");
+      const button = document.querySelector(".chatbot-input button");
+
+      // Ajouter un écouteur d'événement sur le bouton
+      button.addEventListener("click", () => {
+        // Récupérer la valeur du champ texte
+        const message = input.value;
+        // append a new message to the chat
+        const chatbotMessages = document.querySelector(".chatbot-messages");
+        const newMessage = document.createElement("div");
+        newMessage.classList.add("message", "user");
+        newMessage.innerHTML = `
+        <img src="images/user.jpg" alt="User">
+        <div class="message-content">
+          ${message}
+        </div>
+        <div class="timestamp">${new Date().toLocaleString("fr-FR", {
+          hour: "numeric",
+          minute: "numeric",
+        })}</div>
+      `;
+
+        chatbotMessages.appendChild(newMessage);
+        // Clear the input field
+        input.value = "";
+        // Scroll to the bottom
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+        createTrumpMessage(message);
+      });
+      // fait paeil que click quand on fait  enter
+      input.addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+          button.click();
+        }
+      });
+    </script>
+
+    <script>
+      // Sélectionne l'élément contenant le message de Trump
+      //const trumpMessageElement = document.querySelector('#trump-loading .message-content');
+      // create a new message
+      //<div class="message trump" id="trump-loading">
+      // ....
+    </script>
+  </body>
+</html>
