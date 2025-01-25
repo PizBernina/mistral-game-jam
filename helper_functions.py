@@ -6,7 +6,7 @@ from random import choice
 def load_character_data():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(current_dir, 'original_setup/trump.character.json')
-    
+
     with open(json_path, 'r',encoding='utf-8') as file:
         return json.load(file)
 
@@ -21,7 +21,7 @@ def load_chat_history(game_root):
 def update_chat_history(chat_history, user_message=None, trump_message=None):
     # If this is a new interaction, create a new interaction number
     interaction_number = len(chat_history) + 1
-    
+
     # If we're starting a new interaction with a user message
     if user_message and not trump_message:
         interaction_key = f"interaction_{interaction_number}"
@@ -32,19 +32,29 @@ def update_chat_history(chat_history, user_message=None, trump_message=None):
             }
         }
         chat_history.append(new_interaction)
-    
+
     # If we're adding Trump's response to an existing interaction
-    elif trump_message:
+    elif trump_message and chat_history:
         # Get the last interaction number (current one)
         interaction_key = f"interaction_{len(chat_history)}"
         current_interaction = chat_history[-1][interaction_key]
         current_interaction["trump"] = {"role": "Trump", "message": trump_message}
-    
+    # Init
+    elif not chat_history and trump_message and not user_message:
+        interaction_key = f"interaction_{interaction_number}"
+        new_interaction = {
+            interaction_key: {
+                "trump": {"role": "Trump", "message": trump_message},
+                "user": {"role": "user", "message": "..."},
+            }
+        }
+        chat_history.append(new_interaction)
+
     return chat_history
 
 def save_chat_history(history, game_root):
     history_path = os.path.join(game_root, 'chat_history.json')
-    
+
     with open(history_path, 'w',encoding='utf-8') as file:
         json.dump(history, file, indent=2)
 
@@ -114,11 +124,11 @@ def process_ending(idea_is_accepted, game_number, idea):
 
         with open(f'games/game_{game_number}/round_consequences.json', 'r',encoding='utf-8') as f:
             consequences = json.load(f)
-            country = consequences['country'] 
+            country = consequences['country']
             delta_USA = int(consequences['delta_USA'])
             delta_country = int(consequences['delta_country'])
-            delta_friendliness = int(consequences['delta_friendliness']) 
-        
+            delta_friendliness = int(consequences['delta_friendliness'])
+
         GDP = world_graph.update_world(country, delta_USA, delta_country, delta_friendliness, game_number)
 
         return GDP

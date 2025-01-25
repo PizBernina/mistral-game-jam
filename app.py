@@ -50,7 +50,7 @@ async def get_chat_history():
             game_number = len(os.listdir('games/'))
 
         chat_history = load_chat_history(f'games/game_{game_number}')
-        
+
         return {"chat_history": chat_history}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -70,10 +70,9 @@ async def send_message(message: Message):
 
         # Load existing chat history
         chat_history = load_chat_history(f'games/game_{game_number}')
-        interaction_number = len(chat_history) + 1
-        
+
         #If we're at the beginning of a round
-        if interaction_number == 1:
+        if message.message == "":
             idea, concern, advisor_full, events, consequences = generate_round_context(game_number)
             round_context = {
                     "idea": idea,
@@ -101,7 +100,10 @@ async def send_message(message: Message):
 
         # Add user message to history
 
-        chat_history = update_chat_history(chat_history, user_message=message.message)
+        if message.message != "":
+            chat_history = update_chat_history(chat_history, user_message=message.message)
+        else:
+            chat_history = []
         # Format the prompt
         formatted_prompt = instruction_prompt.format(
             hints=hints,
@@ -123,9 +125,10 @@ async def send_message(message: Message):
                 "user": "user",
                 "trump": "assistant"  # Mapping 'trump' to 'assistant'
             }
+        print(chat_history)
         for interaction in chat_history:
             for key, value in interaction.items():
-                user_message = value['user']['message']
+                user_message = value['user']['message'] if 'user' in value else "..."
                 trump_message = value['trump']['message'] if value['trump'] else None
 
                 dynamic_history.append({
@@ -142,12 +145,14 @@ async def send_message(message: Message):
 
         messages = system + dynamic_history
 
+        print("messages", messages)
+        print("model", model)
         chat_response = client.chat.complete(
             model=model,
             messages=messages
         )
 
-        trump_response = chat_response.choices[0].message.content   
+        trump_response = chat_response.choices[0].message.content
 
         # Add Trump's response to history
         chat_history = update_chat_history(chat_history, trump_message=trump_response)

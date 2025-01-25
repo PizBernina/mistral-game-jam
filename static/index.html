@@ -157,6 +157,53 @@
         addMessageToChat('Error: Failed to get response', false);
       });
     }
+    let receivedFirstMessage = false
+    function receiveFirstMessage() {
+      console.log("in receive first")
+      if (receivedFirstMessage) {
+        return
+      }
+      console.log("iiiin receive first")
+
+      receivedFirstMessage = true
+
+      const trumpMessageDiv = addMessageToChat("Donald Trump is typing", false);
+      let dots = 0;
+
+      // Animate "Donald Trump is typing..."
+      const typingInterval = setInterval(() => {
+        dots = (dots + 1) % 4; // Cycle through 0, 1, 2, 3 dots
+        const dotsText = '.'.repeat(dots); // Generate dots
+        updateChatMessage(trumpMessageDiv, `Donald Trump is typing${dotsText}`);
+      }, 200); // Update every 200ms
+
+      // Simulate fetching the first message from the server
+      fetch('/api/generate-text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: "" })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Stop the typing animation
+          clearInterval(typingInterval);
+
+          // Replace "Donald Trump is typing..." with the actual message
+          updateChatMessage(trumpMessageDiv, "");
+
+          // Add the first message from Donald Trump
+          typeMessage(trumpMessageDiv, data.character_response);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+
+          // Stop typing animation and display error message
+          clearInterval(typingInterval);
+          updateChatMessage(trumpMessageDiv, "Error: Failed to get the first message");
+        });
+    }
 
     // Trigger on button click
     document.getElementById('sendButton').addEventListener('click', sendMessage);
@@ -210,6 +257,7 @@
       });
 
       okBtn.addEventListener('click', () => {
+        receiveFirstMessage()
         popup.classList.add('minimized');
       });
 
@@ -965,12 +1013,8 @@ const regionData = {
   "Greenland": { "money": 10, "friendliness": 1 }
 };
 
-
-
-
-
-    // Détermine la couleur de chaque région (vert si au moins un pays est "friendless: Yes", rouge sinon)
-    const regionColors = Object.keys(regionData).reduce((acc, region) => {
+  // Détermine la couleur de chaque région (vert si au moins un pays est "friendless: Yes", rouge sinon)
+  const regionColors = Object.keys(regionData).reduce((acc, region) => {
   const friendliness = regionData[region].friendliness;
   // Convertir `friendliness` en une couleur allant de rouge vif (-3) à vert vif (3)
   const green = Math.max(0, 255 + friendliness * 85);
