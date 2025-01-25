@@ -92,7 +92,7 @@ async def send_message(message: Message):
         # Format the prompt
         formatted_prompt = instruction_prompt.format(
             hints=hints,
-            chat_history=chat_history,
+            chat_history=chat_history, #useless, don't worry
             character=trump_character,
             rules=game_rules,
             triggers=triggers,
@@ -103,25 +103,41 @@ async def send_message(message: Message):
 
         # Get Trump's response
         #### TO STREAM : USE ASYNC VERSION
+
+        system = [{"role": "system", "content": formatted_prompt}]
+        dynamic_history = []
+        role_mapping = {
+                "user": "user",
+                "trump": "assistant"  # Mapping 'trump' to 'assistant'
+            }
+        for interaction in chat_history:
+            for key, value in interaction.items():
+                user_message = value['user']['message']
+                trump_message = value['trump']['message'] if value['trump'] else None
+
+                dynamic_history.append({
+                "role": role_mapping["user"],
+                "content": user_message
+            })
+
+            # Append Trump's message, mapped to 'assistant'
+            if trump_message:
+                dynamic_history.append({
+                    "role": role_mapping["trump"],
+                    "content": trump_message
+                })
+
+        messages = system + dynamic_history
+
         chat_response = client.chat.complete(
             model=model,
-            messages=[
-                {
-                    "role": "system",
-                    "content": formatted_prompt
-                },
-                {
-                    "role": "user",
-                    "content": message.message
-                }
-            ]
+            messages=messages
         )
 
         trump_response = chat_response.choices[0].message.content   
 
         # Add Trump's response to history
         chat_history = update_chat_history(chat_history, trump_message=trump_response)
-        print(chat_history)
         # Save updated chat history
         save_chat_history(chat_history, f'games/game_{game_number}')
 

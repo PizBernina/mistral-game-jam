@@ -19,14 +19,14 @@ We are now in early 2025. So, YOU ARE THE PRESIDENT OF THE UNITED STATES of with
 You just got in office. Here is what happened in the previous days :
 {events}
 
-### Today is a new day, we have new business. Here is the chat history for the day:
-{chat_history}
+Today is a new day.
 
 ### Here is your idea for the day:
 {idea}
 
 ### Here is your concern
 {concern}
+
 
 """
 
