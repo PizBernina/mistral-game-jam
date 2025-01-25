@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>What possibly go Wrong 2025</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 800px;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      background-color: transparent;
+    }
+
+    /* Image de fond qui remplit tout l'écran */
+    body {
+      background: url('/images/intro/Intro.jpg') no-repeat center center;
+      background-size: cover; /* ou 100% auto */
+      position: relative;
+    }
+
+    /* Conteneur du texte */
+    #text-container {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      color: #fff;
+      text-align: left;
+      font-weight: bold;
+      font-size: 1.2rem;
+      z-index: 3; /* au-dessus des flammes si besoin */
+    }
+
+    /* Conteneur des flammes */
+    #flames {
+      position: absolute;
+      bottom: -50px;  /* Move flames down a bit */
+      left: 0;
+      width: 100%;
+      height: 180px;  /* Increase height */
+      background: url('/images/intro/fire3.png') repeat-x;
+      background-size: auto 180px;  /* Match height */
+      animation: flameAnim 3s steps(10) infinite;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @keyframes flameAnim {
+      100% {
+        background-position: -1000px 0; 
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="text-container"></div>
+  <div id="flames"></div>
+
+  <script>
+    const lines = [
+      "Warning !",
+      "This game is a work of fiction.",
+      "Any resemblance to real people or events is purely coincidental.",
+      "",
+      "USA is on the edge of total colapse.",
+      "Borders are wide open.",
+      "People are eating cats and dogs.",
+      "Oil production? it's pratically a fairy tale now ! ",
+      "God sent the perfect president to save the nation.",
+      "",
+      "Welcome to What possibly go Wrong in 2025 ! "
+    ];
+
+    const textContainer = document.getElementById('text-container');
+
+    let lineIndex = 0;    // Indice de la ligne en cours
+    let charIndex = 0;    // Indice du caractère en cours dans la ligne
+    let currentLineElem;  // Élement HTML pour la ligne en cours (si non vide)
+
+    function typeWriter() {
+      // Si on a traité toutes les lignes, on arrête
+      if (lineIndex >= lines.length) {
+        return;
+      }
+
+      const currentLine = lines[lineIndex];
+
+      // -- 1) Gérer la ligne vide ("") --
+      if (currentLine === "") {
+        // On affiche un saut de ligne
+        textContainer.appendChild(document.createElement('br'));
+
+        // Après 2 secondes, on efface le texte et on passe à la suite
+        // setTimeout(() => {
+        //   textContainer.innerHTML = "";
+        //   lineIndex++;
+        //   charIndex = 0;
+        //   typeWriter(); // relance l'affichage de la ligne suivante
+        // }, 3000);
+
+          lineIndex++;
+          charIndex = 0;
+          typeWriter(); // relance l'affichage de la ligne suivante
+
+        // On quitte immédiatement la fonction pour éviter tout conflit de setTimeout
+        return;
+      }
+      
+      // -- 2) Si la ligne n'est pas vide, affichage "lettre par lettre" --
+      if (charIndex === 0) {
+        // On crée un nouvel élément pour la nouvelle ligne
+        currentLineElem = document.createElement('div');
+        textContainer.appendChild(currentLineElem);
+      }
+
+      // Ajout du caractère suivant
+      currentLineElem.textContent += currentLine.charAt(charIndex);
+      charIndex++;
+
+      // S'il reste des caractères à afficher dans la ligne
+      if (charIndex < currentLine.length) {
+        setTimeout(typeWriter, 30);
+      } else {
+        // Ligne terminée : on passe à la ligne suivante
+        lineIndex++;
+        charIndex = 0;
+        currentLineElem = null;
+
+        // Petite pause avant d'attaquer la prochaine ligne
+        setTimeout(typeWriter, 25);
+      }
+    }
+
+    // On démarre le « typewriter »
+    typeWriter();
+  </script>
+</body>
+
+
+</html>

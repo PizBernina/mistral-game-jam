@@ -1,194 +1,362 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    display: flex;
-    font-family: Arial, sans-serif;
-    background-color: #000;
-    color: #fff;
-  }
-  
-  .content {
-    flex: 1;
-    background-color: #fff;
-  }
-  
-  .chatbot {
-    width: 50%;
-    height: 100vh;
-    border-right: 1px solid #333;
-    background-color: #000;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .chatbot-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    width: 100%;
-  }
-  
-  .chatbot-header img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .chatbot-messages {
-    flex: 1;
-    overflow-y: scroll;
-    padding: 10px;
-    scroll-behavior: smooth;
-  }
-  
-  .chatbot-messages::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .message {
-    display: flex;
-    margin-bottom: 15px;
-  }
-  
-  .message img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .message-content {
-    border-radius: 15px;
-    padding: 10px;
-    max-width: 70%;
-  }
-  
-  .message.trump {
-    justify-content: flex-start;
-  }
-  
-  .message.trump .message-content {
-    background-color: #333;
-    color: #e1e8ed;
-  }
-  
-  .message.user {
-    justify-content: flex-end;
-  }
-  
-  .message.user .message-content {
-    background-color: #1da1f2;
-    color: #fff;
-  }
-  
-  .chatbot-input {
-    border-top: 1px solid #333;
-    padding: 10px;
-    display: flex;
-  }
-  
-  .chatbot-input input {
-    flex: 1;
-    background-color: #192734;
-    border: 1px solid #333;
-    border-radius: 20px;
-    padding: 10px;
-    color: #e1e8ed;
-    outline: none;
-    font-size: 14px;
-  }
-  
-  .chatbot-input input::placeholder {
-    color: #71767b;
-  }
-  
-  .chatbot-input button {
-    margin-left: 10px;
-    background-color: #1da1f2;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 15px;
-    cursor: pointer;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    text-align: center;
-  }
+body {
+  display: flex;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+}
 
-  .profile-image {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 12px;
-  }
+.content {
+  flex: 1;
+  background-color: #fff;
+}
 
-  .profile-image img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-  }
+.chatbot {
+  width: 50%;
+  height: 100vh;
+  border-right: 1px solid #333;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+}
 
-  .profile-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0;
-  }
+.chatbot-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  width: 100%;
+}
 
-  .profile-handle {
-    color: #536471;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
+.chatbot-header img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  text-align: center;
+}
 
-  .profile-description {
-    margin: 0.5rem 0;
-    line-height: 1.4;
-  }
+.chatbot-messages {
+  flex: 1;
+  overflow-y: scroll;
+  padding: 10px;
+  scroll-behavior: smooth;
+}
 
-  .profile-text {
-    text-align: center;
-    width: 100%;
-  }
+.chatbot-messages::-webkit-scrollbar {
+  display: none;
+}
 
-  .profile-text h2 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-  }
-  
-  .profile-text span {
-    color: #8899a6;
-    font-size: 14px;
-    display: block;
-    text-align: center;
-  }
-  
-  .profile-text p {
-    margin: 4px 0 0 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #ffffff;
-    text-align: center;
-  }
+.map-container {
+  width: 50%;
+  height: 100vh;
+  background-color: #fff; /* fond blanc */
+  overflow: auto; /* permet de scroller si besoin */
+}
 
-  .divider {
-    width: 100%;
-    height: 1px;
-    background-color: #2f3336;
-    margin-top: 16px;
-  }
+.map-container svg {
+  width: 100%;
+  height: 100%;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.message img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-content {
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 70%;
+}
+
+.message.trump {
+  justify-content: flex-start;
+}
+
+.message.trump .message-content {
+  background-color: #333;
+  color: #e1e8ed;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.user .message-content {
+  background-color: #1da1f2;
+  color: #fff;
+}
+
+.chatbot-input {
+  border-top: 1px solid #333;
+  padding: 10px;
+  display: flex;
+}
+
+.chatbot-input input {
+  flex: 1;
+  background-color: #192734;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 10px;
+  color: #e1e8ed;
+  outline: none;
+  font-size: 14px;
+}
+
+.chatbot-input input::placeholder {
+  color: #71767b;
+}
+
+.chatbot-input button {
+  margin-left: 10px;
+  background-color: #1da1f2;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.profile-image {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.profile-image img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.profile-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.profile-handle {
+  color: #536471;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-description {
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.profile-text {
+  text-align: center;
+  width: 100%;
+}
+
+.profile-text h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+}
+
+.profile-text span {
+  color: #8899a6;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+}
+
+.profile-text p {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #ffffff;
+  text-align: center;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #2f3336;
+  margin-top: 16px;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fff3e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.popup.minimized {
+  top: unset;
+  bottom: 20px;
+  right: 20px;
+  left: unset;
+  transform: none;
+  width: 200px;
+  height: 32px;
+  overflow: hidden;
+  background-color: #1da1f2;
+}
+
+.popup.minimized .popup-content {
+  display: none;
+}
+
+.popup.minimized .popup-header {
+  padding: 4px 8px;
+  height: 32px;
+}
+
+.popup-header {
+  background-color: #1da1f2;
+  color: white;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+  cursor: move;
+}
+
+.popup-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.control-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.popup-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #000;
+}
+
+.popup-gif {
+  max-width: 100%;
+  height: auto;
+}
+
+.popup-ok {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.popup-ok:hover {
+  background-color: #1a91da;
+}
+
+#gameOverPopup {
+  width: fit-content;
+}
+
+#gameOverPopup .popup-content {
+  padding: 0;
+  gap: 5px;
+}
+
+#gameOverPopup .popup-gif {
+  display: block;
+  width: 600px;
+  height: 300px;
+  margin: 0;
+}
+
+#gameOverPopup .popup-header {
+  padding: 5px 10px;
+}
+
+#gameOverPopup .popup-ok {
+  margin: 5px 0;
+}
+
+.intro-frame {
+  width: 800px;
+  height: 650px;
+  border: none;
+  overflow: hidden;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+#gamePopup {
+  width: auto;
+  background-color: transparent;
+  padding: 0;
+}
+
+#gamePopup .popup-content {
+  padding: 0;
+  position: relative;
+}
+
+#gamePopup .popup-ok {
+  position: absolute;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background-color: rgba(29, 161, 242, 0.8);
+  padding: 12px 30px;
+  font-size: 16px;
+}
+
+#gamePopup .popup-ok:hover {
+  background-color: rgba(29, 161, 242, 1);
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "interaction_1": {
+      "user": {
+        "role": "user",
+        "message": "Hello"
+      },
+      "trump": {
+        "role": "Trump",
+        "message": "HEY THERE! GREAT TO SEE YOU. I'VE BEEN THINKING, WE NEED TO AUGMENT TARIFFS FROM EUROPE. THEY'VE BEEN TAKING ADVANTAGE OF US FOR YEARS, AND IT'S TIME WE PUT AMERICA FIRST. BUT, I WANT TO KNOW HOW THIS WILL IMPACT JOBS HERE. WE DON'T WANT TO LOSE MORE JOBS TO THOSE FOREIGN NATIONS, RIGHT? LET'S MAKE AMERICA GREAT AGAIN, NOT CHINA OR GERMANY!"
+      }
+    }
+  },
+  {
+    "interaction_2": {
+      "user": {
+        "role": "user",
+        "message": "Hello"
+      },
+      "trump": {
+        "role": "Trump",
+        "message": "HEY THERE! LET'S GET DOWN TO BUSINESS. WE NEED TO AUGMENT TARIFFS FROM EUROPE. THEY'VE BEEN TAKING ADVANTAGE OF US FOR YEARS, AND IT'S TIME WE PUT AMERICA FIRST. BUT, I WANT TO KNOW HOW THIS WILL IMPACT JOBS HERE. WE DON'T WANT TO LOSE MORE JOBS TO THOSE FOREIGN NATIONS, RIGHT? LET'S MAKE AMERICA GREAT AGAIN, NOT CHINA OR GERMANY! SO, TELL ME, HOW DO WE MAKE SURE THIS WORKS FOR US?"
+      }
+    }
+  },
+  {
+    "interaction_3": {
+      "user": {
+        "role": "user",
+        "message": "Hello"
+      },
+      "trump": {
+        "role": "Trump",
+        "message": "HEY THERE! LET'S GET DOWN TO BUSINESS. WE NEED TO AUGMENT TARIFFS FROM EUROPE. THEY'VE BEEN TAKING ADVANTAGE OF US FOR YEARS, AND IT'S TIME WE PUT AMERICA FIRST. BUT, I WANT TO KNOW HOW THIS WILL IMPACT JOBS HERE. WE DON'T WANT TO LOSE MORE JOBS TO THOSE FOREIGN NATIONS, RIGHT? LET'S MAKE AMERICA GREAT AGAIN, NOT CHINA OR GERMANY! SO, TELL ME, HOW DO WE MAKE SURE THIS WORKS FOR US?"
+      }
+    }
+  },
+  {
+    "interaction_4": {
+      "user": {
+        "role": "user",
+        "message": "Hello"
+      },
+      "trump": {
+        "role": "Trump",
+        "message": "HEY THERE! LET'S GET DOWN TO BUSINESS. WE NEED TO AUGMENT TARIFFS FROM EUROPE. THEY'VE BEEN TAKING ADVANTAGE OF US FOR YEARS, AND IT'S TIME WE PUT AMERICA FIRST. BUT, I WANT TO KNOW HOW THIS WILL IMPACT JOBS HERE. WE DON'T WANT TO LOSE MORE JOBS TO THOSE FOREIGN NATIONS, RIGHT? LET'S MAKE AMERICA GREAT AGAIN, NOT CHINA OR GERMANY! SO, TELL ME, HOW DO WE MAKE SURE THIS WORKS FOR US?"
+      }
+    }
+  },
+  {
+    "interaction_5": {
+      "user": {
+        "role": "user",
+        "message": "Hello"
+      },
+      "trump": {
+        "role": "Trump",
+        "message": "HEY THERE! LET'S GET DOWN TO BUSINESS. WE NEED TO AUGMENT TARIFFS FROM EUROPE. THEY'VE BEEN TAKING ADVANTAGE OF US FOR YEARS, AND IT'S TIME WE PUT AMERICA FIRST. BUT, I WANT TO KNOW HOW THIS WILL IMPACT JOBS HERE. WE DON'T WANT TO LOSE MORE JOBS TO THOSE FOREIGN NATIONS, RIGHT? LET'S MAKE AMERICA GREAT AGAIN, NOT CHINA OR GERMANY! SO, TELL ME, HOW DO WE MAKE SURE THIS WORKS FOR US?"
+      }
+    }
+  },
+  {
+    "interaction_6": {
+      "user": {
+        "role": "user",
+        "message": "Okay so i think it's not a good idea to augment tarrifs ebacause if we augment tarrifs we will deterior the relations with our allies"
+      },
+      "trump": {
+        "role": "Trump",
+        "message": "LET ME TELL YOU SOMETHING, WE NEED TO PUT AMERICA FIRST. BUT, YOU'RE RIGHT, WE NEED TO BE SMART ABOUT IT. SO, TELL ME, HOW DO WE AUGMENT TARIFFS WITHOUT HURTING OUR RELATIONS WITH OUR ALLIES? WE CAN'T LET THEM TAKE ADVANTAGE OF US, BUT WE NEED TO KEEP OUR FRIENDS CLOSE, RIGHT? LET'S FIGURE THIS OUT, BECAUSE I WANT TO MAKE SURE WE'RE DOING THE RIGHT THING FOR AMERICA, NOT BIDEN OR KAMALA."
+      }
+    }
+  }
+]
