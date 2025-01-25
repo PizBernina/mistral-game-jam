@@ -62,9 +62,7 @@ async def send_message(message: Message):
             game_number = len(os.listdir('games/'))
 
         # Load existing chat history
-        print(f'{game_number}')
         chat_history = load_chat_history(f'games/game_{game_number}')
-        print(chat_history)
         interaction_number = len(chat_history) + 1
         
         #If we're at the beginning of a round
@@ -72,6 +70,7 @@ async def send_message(message: Message):
             idea, concern, events = generate_round_context(game_number)
         
         # Add user message to history
+        print(1, chat_history)
         chat_history = update_chat_history(chat_history, user_message=message.message)
         # Format the prompt
         formatted_prompt = instruction_prompt.format(
