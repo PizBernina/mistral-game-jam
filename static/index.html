@@ -7,29 +7,34 @@
 </head>
 <body>
   DEMO fastapi with static HTML. POST request to /api/test:<br/>
+  <input type="text" id="value1Input" placeholder="Enter value1">
+  <button id="sendRequest">Send Request</button>
   <pre id="demo_output"></pre>
   <script>
-    document.getElementById("demo_output").innerHTML = "Loading...";
+    document.getElementById("sendRequest").addEventListener("click", function() {
+      const value1 = document.getElementById("value1Input").value;
+      const DEMO_JSON = {
+        "key1": value1,
+        "key2": "value2"
+      };
 
-    const DEMO_JSON = {
-      "key1": "value1",
-      "key2": "value2"
-    };
-
-    fetch('/api/test', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(DEMO_JSON),
-    })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById("demo_output").innerHTML = JSON.stringify(data, null, 2);
+      document.getElementById("demo_output").innerHTML = "Loading...";
+      
+      fetch('/api/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(DEMO_JSON),
       })
-      .catch(error => {
-        document.getElementById("demo_output").innerHTML = 'Error: ' + error;
-      });
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("demo_output").innerHTML = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+          document.getElementById("demo_output").innerHTML = 'Error: ' + error;
+        });
+    });
   </script>
 </body>
 </html>
