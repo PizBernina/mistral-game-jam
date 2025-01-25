@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import os
 import json
@@ -13,6 +14,18 @@ from helper_functions import load_chat_history, save_chat_history, update_chat_h
 from utils import model, trump_character, client
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount static files
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 class Message(BaseModel):
     message: str
@@ -60,7 +73,7 @@ def generate_text(message: Message):
             "chat_history": chat_history
         }
 
-@app.post("/generate-text")
+@app.post("/api/generate-text")
 def inference(message: Message, request: Request):
     if request.headers.get("origin") != "https://Mistral-AI-Game-Jam/team13.static.hf.space":
         return 204
