@@ -5,13 +5,19 @@ import os
 import json
 from dotenv import load_dotenv
 from mistralai import Mistral
-from prompts.instruction_prompts import instruction_prompt
-from prompts.game_rules import game_rules
-from prompts.hints import hints
-from prompts.triggers import triggers
-from helper_functions import load_chat_history, save_chat_history, update_chat_history
+
+from original_setup.instruction_prompts import instruction_prompt
+from original_setup.game_rules import game_rules
+from original_setup.hints import hints
+from original_setup.triggers import triggers
+
+from helper_functions import *
 from utils import model, trump_character, client
 
+from graph_utils import *
+
+# initialize game
+init_game = True
 # Initialize FastAPI app
 app = FastAPI()
 
@@ -29,31 +35,58 @@ class Message(BaseModel):
 
 @app.get("/chat-history")
 async def get_chat_history():
+    global init_game
     try:
-        chat_history = load_chat_history()
+        #If we're ate the beginning of a game
+        if init_game:
+            game_number = initialize_game()
+            init_game = False
+        else:
+            game_number = len(os.listdir('games/'))
+
+        chat_history = load_chat_history(f'games/game_{game_number}')
+        
         return {"chat_history": chat_history}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/send-message")
 async def send_message(message: Message):
+    global init_game
     try:
-        # Load existing chat history
-        chat_history = load_chat_history()
+        #If we're ate the beginning of a game
+        if init_game:
+            game_number = initialize_game()
+            init_game = False
+        else:
+            game_number = len(os.listdir('games/'))
 
+        # Load existing chat history
+        print(f'{game_number}')
+        chat_history = load_chat_history(f'games/game_{game_number}')
+        print(chat_history)
+        interaction_number = len(chat_history) + 1
+        
+        #If we're at the beginning of a round
+        if interaction_number == 1:
+            idea, concern, events = generate_round_context(game_number)
+        
         # Add user message to history
         chat_history = update_chat_history(chat_history, user_message=message.message)
-
         # Format the prompt
         formatted_prompt = instruction_prompt.format(
             hints=hints,
             chat_history=chat_history,
             character=trump_character,
             rules=game_rules,
-            triggers=triggers
+            triggers=triggers,
+            events=events,
+            idea=idea,
+            concern=concern
         )
 
         # Get Trump's response
+        #### TO STREAM : USE ASYNC VERSION
         chat_response = client.chat.complete(
             model=model,
             messages=[
@@ -68,13 +101,13 @@ async def send_message(message: Message):
             ]
         )
 
-        trump_response = chat_response.choices[0].message.content
+        trump_response = chat_response.choices[0].message.content   
 
         # Add Trump's response to history
         chat_history = update_chat_history(chat_history, trump_message=trump_response)
-
+        print(chat_history)
         # Save updated chat history
-        save_chat_history(chat_history)
+        save_chat_history(chat_history, f'games/game_{game_number}')
 
         return {
             "trump_response": trump_response,
