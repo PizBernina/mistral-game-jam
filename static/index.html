@@ -60,15 +60,10 @@
 
   <div class="popup" id="sequencePopup">
     <div class="popup-header">
-      <span class="popup-title">Sequence ended</span>
-      <!-- <div class="popup-controls">
-        <button class="control-btn minimize">−</button>
-        <button class="control-btn maximize">□</button>
-        <button class="control-btn close">×</button>
-      </div> -->
+      <span class="popup-title">Sequence Ended</span>
     </div>
     <div class="popup-content">
-      <iframe src="next-sequence.html" class="intro-frame"></iframe>
+      <div id="text-container" class="intro-content"></div>
       <button class="popup-sequence-ok">Next Sequence</button>
     </div>
   </div>
@@ -170,8 +165,7 @@
         if (data.chat_ended === true) {
           endSequence(data.idea, data.idea_accepted);
           console.log("data.idea_accepted", data.idea_accepted)
-          sessionStorage.setItem('idea', data.idea);
-          sessionStorage.setItem('idea_accepted', data.idea_accepted);
+          console.log("data.idea", data.idea)
         }
         //addMessageToChat(data.character_response, false);
       })
@@ -260,7 +254,26 @@
 
     function displaySequencePopup(idea, idea_accepted) {
       const popup = document.getElementById('sequencePopup');
-      popup.contentWindow.location.reload();
+
+      const message = [
+        idea_accepted === "True"
+          ? "You have not been able to deter Donald Trump from doing what he had in mind his idea. Then,"
+          : "You couldn't change Donald's mind, consequently he will:",
+        idea,
+      ];
+
+      const textContainer = document.getElementById('text-container');
+      while (textContainer.firstChild) {
+        textContainer.removeChild(textContainer.firstChild);
+      }
+
+      // Dynamically add text to the text container
+      message.forEach((line) => {
+        const p = document.createElement('p');
+        p.textContent = line;
+        textContainer.appendChild(p);
+      });
+
       popup.style.display = 'block';
     }
 
