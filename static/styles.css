@@ -297,6 +297,17 @@ body {
   font-size: 14px;
 }
 
+.popup-sequence-ok {
+  background-color: #f21d1d;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+
 .popup-ok:hover {
   background-color: #1a91da;
 }

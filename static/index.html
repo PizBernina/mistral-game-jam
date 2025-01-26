@@ -58,6 +58,22 @@
     </div>
   </div>
 
+  <div class="popup" id="sequencePopup">
+    <div class="popup-header">
+      <span class="popup-title">Sequence ended</span>
+      <!-- <div class="popup-controls">
+        <button class="control-btn minimize">−</button>
+        <button class="control-btn maximize">□</button>
+        <button class="control-btn close">×</button>
+      </div> -->
+    </div>
+    <div class="popup-content">
+      <iframe src="next-sequence.html" class="intro-frame"></iframe>
+      <button class="popup-sequence-ok">Next Sequence</button>
+    </div>
+  </div>
+
+
   <!-- Ajout : container pour la carte SVG à droite -->
   <div class="map-container">
     <svg
@@ -153,6 +169,9 @@
         console.log("chat ended: ", data.chat_ended);
         if (data.chat_ended === true) {
           endSequence(data.idea, data.idea_accepted);
+          console.log("data.idea_accepted", data.idea_accepted)
+          sessionStorage.setItem('idea', data.idea);
+          sessionStorage.setItem('idea_accepted', data.idea_accepted);
         }
         //addMessageToChat(data.character_response, false);
       })
@@ -235,16 +254,14 @@
     }
 
     function endSequence(idea, idea_accepted) {
-      // Vide le chat
-      clearChatbox()
-
-      //displaySequencePopup(idea, idea_accepted) // not available
-
+      displaySequencePopup(idea, idea_accepted)
       fetchUpdateMap()
-      // Affiche pop up sequence result avec action prise par trump
-      // Update map
-      receivedFirstMessage = false
-      receiveFirstMessage()
+    }
+
+    function displaySequencePopup(idea, idea_accepted) {
+      const popup = document.getElementById('sequencePopup');
+      popup.contentWindow.location.reload();
+      popup.style.display = 'block';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -276,6 +293,9 @@
       const closeBtn = popup.querySelector('.close');
       const okBtn = popup.querySelector('.popup-ok');
 
+      const seqPopup = document.getElementById('sequencePopup');
+      const okSequenceBtn = seqPopup.querySelector('.popup-sequence-ok');
+
       minimizeBtn.addEventListener('click', () => {
         receiveFirstMessage()
         popup.classList.add('minimized');
@@ -290,7 +310,16 @@
         popup.style.display = 'none';
       });
 
+      okSequenceBtn.addEventListener('click', () => {
+        clearChatbox()
+
+        receivedFirstMessage = false
+        receiveFirstMessage()
+        seqPopup.style.display = 'none';
+      });
+
       okBtn.addEventListener('click', () => {
+        console.log("start game")
         receiveFirstMessage()
         popup.classList.add('minimized');
       });
