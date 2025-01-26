@@ -7,6 +7,9 @@ In this game, you play as **an advisor to Donald Strump**, an influential leader
 
 Track the geopolitical consequences of his actions on an interactive map and adapt your strategy to achieve success.
 
+![Trump](assets/trump/trump.png)
+
+
 ---
 
 ## Tech Stack  
