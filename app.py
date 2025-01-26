@@ -98,7 +98,6 @@ async def send_message(message: Message):
             else:
                 raise FileNotFoundError(f"Round context file not found: {file_path}")
 
-        advisor = advisor_full.split('.')[0]
         # Add user message to history
 
         if message.message != "":
