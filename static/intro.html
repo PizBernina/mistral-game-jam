@@ -54,7 +54,7 @@
 
     @keyframes flameAnim {
       100% {
-        background-position: -1000px 0; 
+        background-position: -1000px 0;
       }
     }
   </style>
@@ -65,7 +65,7 @@
   <div id="flames"></div>
 
   <script>
-    const lines = [
+    const lines1 = [
       "Warning !",
       "This game is a work of fiction.",
       "Any resemblance to real people or events is purely coincidental.",
@@ -75,9 +75,6 @@
       "People are eating cats and dogs.",
       "Oil production? It's practically a fairy tale now ! ",
       "God sent the perfect president to save the nation.",
-      "",
-      "Welcome to",
-      "What Could Possibly Go Wrong in 2025 !"
     ];
 
     const textContainer = document.getElementById('text-container');
@@ -86,7 +83,7 @@
     let charIndex = 0;    // Indice du caractère en cours dans la ligne
     let currentLineElem;  // Élement HTML pour la ligne en cours (si non vide)
 
-    function typeWriter() {
+    function typeWriter(lines, lineIndex, charIndex) {
       // Si on a traité toutes les lignes, on arrête
       if (lineIndex >= lines.length) {
         return;
@@ -109,12 +106,12 @@
 
           lineIndex++;
           charIndex = 0;
-          typeWriter(); // relance l'affichage de la ligne suivante
+          typeWriter(lines, lineIndex, charIndex); // relance l'affichage de la ligne suivante
 
         // On quitte immédiatement la fonction pour éviter tout conflit de setTimeout
         return;
       }
-      
+
       // -- 2) Si la ligne n'est pas vide, affichage "lettre par lettre" --
       if (charIndex === 0) {
         // On crée un nouvel élément pour la nouvelle ligne
@@ -128,7 +125,7 @@
 
       // S'il reste des caractères à afficher dans la ligne
       if (charIndex < currentLine.length) {
-        setTimeout(typeWriter, 30);
+        setTimeout(() => typeWriter(lines, lineIndex, charIndex), 30);
       } else {
         // Ligne terminée : on passe à la ligne suivante
         lineIndex++;
@@ -136,12 +133,32 @@
         currentLineElem = null;
 
         // Petite pause avant d'attaquer la prochaine ligne
-        setTimeout(typeWriter, 25);
+        setTimeout(() => typeWriter(lines, lineIndex, charIndex), 25);
       }
     }
 
     // On démarre le « typewriter »
-    typeWriter();
+    typeWriter(lines1, lineIndex, charIndex)
+
+    const lines2 = [
+      "Welcome to",
+      "What Could Possibly Go Wrong in 2025 !",
+      "",
+      "President Trump is actively chatting on X",
+      "sharing his plans with random individuals.",
+      "",
+      "Your role is to manage the ensuing chaos...",
+      "",
+      "You will play as these individuals, responding to his messages.",
+      "Your goal: Convince him not to take actions that could threaten global peace. The map shows other countries' relations with the USA.",
+    ];
+
+    setTimeout(() => {
+      while (textContainer.firstChild) {
+        textContainer.removeChild(textContainer.firstChild);
+      }
+    }, 11999)
+    setTimeout(() => typeWriter(lines2, 0, 0), 12000)
   </script>
 </body>
 
