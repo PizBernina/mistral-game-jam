@@ -163,8 +163,10 @@
         typeMessage(trumpMessageDiv, data.character_response)
         console.log("chat ended: ", data.chat_ended);
         if (data.chat_ended === true) {
-          endSequence(data.idea, data.idea_accepted);
-          console.log("data.idea_accepted", data.idea_accepted)
+          endSequence(data.idea, data.idea_is_accepted);
+          console.log("data.idea_is_accepted", data.idea_is_accepted)
+          console.log("data.idea_is_accepted true", data.idea_is_accepted === true)
+          console.log("data.idea_is_accepted false", data.idea_is_accepted === false)
           console.log("data.idea", data.idea)
         }
         //addMessageToChat(data.character_response, false);
@@ -256,9 +258,9 @@
       const popup = document.getElementById('sequencePopup');
 
       const message = [
-        idea_accepted === "True"
-          ? "You have not been able to deter Donald Trump from doing what he had in mind his idea. Then,"
-          : "You couldn't change Donald's mind, consequently he will:",
+        idea_accepted === true
+          ? "You couldn't change Donald's mind, consequently he will:"
+          : "Congratulations, you have been able to change Donald's mind, so he won't:",
         idea,
       ];
 
