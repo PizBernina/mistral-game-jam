@@ -23,6 +23,9 @@ init_game = True
 game_over_rich = False
 game_over_bankrupt = False
 
+world_graph = WorldGraph(f'original_setup/contexts/world_map.edgelist')
+dico_world = world_graph.push_data_to_front()
+
 # Initialize FastAPI app
 app = FastAPI()
 
@@ -60,6 +63,8 @@ async def send_message(message: Message):
     global init_game
     global game_over_rich
     global game_over_bankrupt
+    global dico_world
+
     try:
         #If we're ate the beginning of a game
         if init_game:
@@ -174,6 +179,14 @@ async def send_message(message: Message):
     except Exception as e:
         print(e)
         raise e
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/world-data", tags=['Game'])
+async def get_world_data():
+    global dico_world
+    try:
+        return {"world_data": dico_world}
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 # Add this before the final static files mount

@@ -76,7 +76,11 @@ def generate_round_context(game_number):
         idea_csq = file.readlines()
         idea_csq = choice(idea_csq)
         idea, delta_USA, delta_country, delta_friendliness = idea_csq.split(';')
-        delta_friendliness = delta_friendliness.split()[0]
+        try:
+            delta_friendliness = delta_friendliness.split()[0]
+        except:
+            pass
+
     with open(contexts_dir + 'countries.list', 'r',encoding='utf-8') as f_countries:
         countries = f_countries.readlines()
         country = choice(countries).split()[0]

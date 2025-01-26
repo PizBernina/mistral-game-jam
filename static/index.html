@@ -164,9 +164,6 @@
         console.log("chat ended: ", data.chat_ended);
         if (data.chat_ended === true) {
           endSequence(data.idea, data.idea_is_accepted);
-          console.log("data.idea_is_accepted", data.idea_is_accepted)
-          console.log("data.idea_is_accepted true", data.idea_is_accepted === true)
-          console.log("data.idea_is_accepted false", data.idea_is_accepted === false)
           console.log("data.idea", data.idea)
         }
         //addMessageToChat(data.character_response, false);
@@ -280,7 +277,22 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-      updateMap(regionData)
+      fetch('/api/world-data', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("new world map: ", data)
+        const regionData = data.world_data
+        updateMap(regionData);
+      })
+      .catch(error => {
+        console.error('Could not update world map:', error);
+      });
+
 
       // Load the intro content
       fetch('./intro.html')
@@ -1074,41 +1086,40 @@
 };
 
     // Le dico qu'on reçoit
-    const regionData = {
-      "United-States": { "money": 100, "friendliness": -1 },
-      "Canada": { "money": 50, "friendliness": -1 },
-      "Mexico": { "money": 30, "friendliness": 2 },
-      "South-America": { "money": 40, "friendliness": 3 },
-      "Africa": { "money": 20, "friendliness": 1 },
-      "Europe": { "money": 80, "friendliness": 2 },
-      "Middle-East": { "money": 60, "friendliness": -2 },
-      "Russia": { "money": 70, "friendliness": -3 },
-      "China": { "money": 90, "friendliness": -1 },
-      "India": { "money": 50, "friendliness": 2 },
-      "Australia": { "money": 55, "friendliness": 1 },
-      "Pacific": { "money": 25, "friendliness": 3 },
-      "Taiwan": { "money": 65, "friendliness": 0 },
-      "Greenland": { "money": 10, "friendliness": 1 }
-    };
+    // const regionData = {
+    //   "United-States": { "money": 100, "friendliness": -1 },
+    //   "Canada": { "money": 50, "friendliness": -1 },
+    //   "Mexico": { "money": 30, "friendliness": 2 },
+    //   "South-America": { "money": 40, "friendliness": 3 },
+    //   "Africa": { "money": 20, "friendliness": 1 },
+    //   "Europe": { "money": 80, "friendliness": 2 },
+    //   "Middle-East": { "money": 60, "friendliness": -2 },
+    //   "Russia": { "money": 70, "friendliness": -3 },
+    //   "China": { "money": 90, "friendliness": -1 },
+    //   "India": { "money": 50, "friendliness": 2 },
+    //   "Australia": { "money": 55, "friendliness": 1 },
+    //   "Pacific": { "money": 25, "friendliness": 3 },
+    //   "Taiwan": { "money": 65, "friendliness": 0 },
+    //   "Greenland": { "money": 10, "friendliness": 1 }
+    // };
 
     function fetchUpdateMap() {
-      const regionData = {
-        "United-States": { "money": 100, "friendliness": -1 },
-        "Canada": { "money": 50, "friendliness": -3 },
-        "Mexico": { "money": 30, "friendliness": 2 },
-        "South-America": { "money": 40, "friendliness": 3 },
-        "Africa": { "money": 20, "friendliness": 1 },
-        "Europe": { "money": 80, "friendliness": 2 },
-        "Middle-East": { "money": 60, "friendliness": -2 },
-        "Russia": { "money": 70, "friendliness": -3 },
-        "China": { "money": 90, "friendliness": -1 },
-        "India": { "money": 50, "friendliness": 2 },
-        "Australia": { "money": 55, "friendliness": 1 },
-        "Pacific": { "money": 25, "friendliness": 3 },
-        "Taiwan": { "money": 65, "friendliness": 0 },
-        "Greenland": { "money": 10, "friendliness": 1 }
-      };
-      updateMap(regionData);
+
+      fetch('/api/world-data', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("new world map: ", data)
+        const regionData = data.world_data
+        updateMap(regionData);
+      })
+      .catch(error => {
+        console.error('Could not update world map:', error);
+      });
     }
 
     function updateMap(regionData) {
