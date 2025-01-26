@@ -128,6 +128,4 @@ def process_ending(idea_is_accepted, game_number, idea):
             delta_country = int(consequences['delta_country'])
             delta_friendliness = int(consequences['delta_friendliness'])
 
-        GDP = world_graph.update_world(country, delta_USA, delta_country, delta_friendliness, game_number)
-
-        return GDP
+        world_graph.update_world(country, delta_USA, delta_country, delta_friendliness, game_number)

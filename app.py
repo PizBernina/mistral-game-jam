@@ -159,8 +159,10 @@ async def send_message(message: Message):
         is_ending, idea_is_accepted = check_end(trump_response)
 
         if is_ending:
-            GDP = process_ending(idea_is_accepted, game_number, idea)
-            print(GDP)
+            process_ending(idea_is_accepted, game_number, idea)
+            
+            world_graph = WorldGraph(f'games/game_{game_number}/world_graph.edgelist')
+            dico_world = world_graph.push_data_to_front()
 
         return {
             "character_response": trump_response,
