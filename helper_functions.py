@@ -119,17 +119,22 @@ def check_end(trump_response):
 
 
 def process_ending(idea_is_accepted, game_number, idea):
-    if idea_is_accepted:
-        with open(f'games/game_{game_number}/events.list', 'a',encoding='utf-8') as f:
-            f.write(idea + '\n')
+    with open(f'games/game_{game_number}/events.list', 'a',encoding='utf-8') as f:
+        f.write(idea + '\n')
 
-        world_graph = WorldGraph(f'games/game_{game_number}/world_graph.edgelist')
+    world_graph = WorldGraph(f'games/game_{game_number}/world_graph.edgelist')
 
-        with open(f'games/game_{game_number}/round_consequences.json', 'r',encoding='utf-8') as f:
-            consequences = json.load(f)
-            country = consequences['country']
+    with open(f'games/game_{game_number}/round_consequences.json', 'r',encoding='utf-8') as f:
+        consequences = json.load(f)
+        country = consequences['country']
+        if idea_is_accepted:
             delta_USA = int(consequences['delta_USA'])
             delta_country = int(consequences['delta_country'])
             delta_friendliness = int(consequences['delta_friendliness'])
+        if not idea_is_accepted:
+            delta_USA = 0
+            delta_country = 0
+            delta_friendliness = max(0, -int(consequences['delta_friendliness']))
 
-        world_graph.update_world(country, delta_USA, delta_country, delta_friendliness, game_number)
+
+    world_graph.update_world(country, delta_USA, delta_country, delta_friendliness, game_number)
